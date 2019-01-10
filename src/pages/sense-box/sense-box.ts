@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Paho } from 'ng2-mqtt/mqttws31';
-import * as HighCharts from 'highcharts';
+// import * as HighCharts from 'highcharts';
+declare var Highcharts : any;
 /**
  * Generated class for the SenseBoxPage page.
  *
@@ -19,19 +20,40 @@ export class SenseBoxPage {
   boxData: any;
   client: any;
   message: any;
+  r: any[] = [];
+  z: any[] = [];
   xdatArray: number[] = [];
   ydatArray: number[] = []; 
   zdatArray: number[] = []; 
   xchart: any;
   ychart: any;
   zchart: any;
+  stockChart: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
 
-      this.xchart = HighCharts.chart('xValues', {
+    // create the chart
+  this.stockChart = Highcharts.stockChart('container',{
+    chart: {
+    alignTicks: false
+    },
+    rangeSelector: {
+    selected: 1
+    },
+    title: {
+    text: 'AAPL Stock Volume'
+    },
+    series: [{
+    type: 'column',
+    name: 'AAPL Stock Volume',
+    data: this.r
+    }]
+    });
+
+      this.xchart = Highcharts.chart('xValues', {
         chart: {
           type: 'spline'
         },
@@ -53,7 +75,7 @@ export class SenseBoxPage {
           }]
       });
 
-      this.ychart = HighCharts.chart('yValues', {
+      this.ychart = Highcharts.chart('yValues', {
         chart: {
           type: 'spline'
         },
@@ -75,7 +97,7 @@ export class SenseBoxPage {
           }]
       });
 
-      this.zchart = HighCharts.chart('zValues', {
+      this.zchart = Highcharts.chart('zValues', {
         chart: {
           type: 'spline'
         },
@@ -137,8 +159,19 @@ export class SenseBoxPage {
     console.log("onMessageArrived:", message.destinationName, message.payloadString);
     if(message.destinationName === "accelerometer/x") {
       this.xdatArray.push(+message.payloadString);
+      this.r.push({
+        data: this.z.push([
+          Date.now(),
+          +message.payloadString
+        ]),
+        lineWidth: 2,
+        boostThreshold: 1,
+        turboThreshold: 1,
+        showInNavigator: true
+    });
     }
     this.xchart.series[0].setData(this.xdatArray);
+    this.stockChart.series[0].setData(this.r);
     if(message.destinationName === "accelerometer/y") {
       this.ydatArray.push(+message.payloadString);
     }
