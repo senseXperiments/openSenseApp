@@ -18,7 +18,7 @@ export class openSenseApp {
     { title: 'Home', component: HomePage },
     { title: 'Acceleration', component: 'SenseBoxPage' },
     { title: 'Game', component: 'MaxaccPage' },
-    // { title: 'Games', component: 'GamesPage' },
+    { title: 'Pendulum', component: 'PendulumPage' },
     // { title: 'Experiments', component: 'ExperimentsPage' },
     // { title: 'Accelerometer', component: 'AccelerometerPage'},
     { title: 'Gyroscope', component: 'GyroscopePage' },
