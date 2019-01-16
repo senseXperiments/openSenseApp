@@ -1,3 +1,4 @@
+
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -15,12 +16,13 @@ export class openSenseApp {
 
   pages: Array<{title: string, component: any}> = [
     { title: 'Home', component: HomePage },
-    { title: 'About', component: 'AboutPage' },
-    { title: 'Games', component: 'GamesPage' },
-    { title: 'Experiments', component: 'ExperimentsPage' },
-    { title: 'Accelerometer', component: 'AccelerometerPage'},
+    { title: 'Acceleration', component: 'SenseBoxPage' },
+    { title: 'Game', component: 'MaxaccPage' },
+    // { title: 'Games', component: 'GamesPage' },
+    // { title: 'Experiments', component: 'ExperimentsPage' },
+    // { title: 'Accelerometer', component: 'AccelerometerPage'},
     { title: 'Gyroscope', component: 'GyroscopePage' },
-    { title: 'senseBox', component: 'SenseBoxPage' },
+    { title: 'About', component: 'AboutPage' },
   ];
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {

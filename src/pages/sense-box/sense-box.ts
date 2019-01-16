@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Paho } from 'ng2-mqtt/mqttws31';
 import * as HighCharts from 'highcharts';
+import { GlobalProvider } from "../../providers/global/global";
 /**
  * Generated class for the SenseBoxPage page.
  *
@@ -19,39 +20,90 @@ export class SenseBoxPage {
   boxData: any;
   client: any;
   message: any;
-  datArray: number[] = []; 
-  chart: any;
+  xdatArray: number[] = [];
+  ydatArray: number[] = []; 
+  zdatArray: number[] = [];
+  totDatArray: number[] = []; 
+  xchart: any;
+  ychart: any;
+  zchart: any;
+  connected: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
 
   ionViewDidLoad() {
 
-      this.chart = HighCharts.chart('xValues', {
+    HighCharts.setOptions({
+      time: {
+          timezone: 'Europe/Berlin'
+      }
+    });
+
+      this.xchart = HighCharts.chart('xValues', {
         chart: {
-          type: 'spline'
+          type: 'spline',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift'
         },
         title: {
-          text: 'Acceleration on X-Axis'
+          text: 'Acceleration of senseBox'
         },
         xAxis: {
           title: {
-            text: 'Measurements'
+            text: 'Seconds'
+          },
+          type: 'datetime',
+          // pointInterval: 100,
+          tickInterval: 10000, // one week
+          tickWidth: 0,
+          gridLineWidth: 1,
+          labels: {
+              align: 'left',
+              x: 3,
+              y: -3
           }
         },
         yAxis: {
           title: {
-            text: 'Value of Acceleration'
+            text: 'G-Force'
           }
         },
+        plotOptions: {
+          series: {
+              marker: {
+                  enabled: false
+              }
+          }
+      },
         series: [{
-          data: this.datArray
+            name: "X-Axis",
+            data: this.xdatArray,
+            pointStart: Date.now(), // first of April
+            pointInterval: 100
+          },
+          {
+            name: "Y-Axis",
+            data: this.ydatArray,
+            pointStart: Date.now(), // first of April
+        pointInterval: 100,
+          },
+          {
+            name: "Z-Axis",
+            data: this.zdatArray,
+            pointStart: Date.now(), // first of April
+        pointInterval: 100
+          },
+          { name: "Total",
+            data: this.totDatArray,
+            pointStart: Date.now(), // first of April
+        pointInterval: 100
           }]
       });
     
-
     // Create a client instance
-    this.client = new Paho.MQTT.Client('10.0.1.71', 11883, "clienId");
+    this.client = new Paho.MQTT.Client(this.global.mqttip, 11883, "clienId");
     
 
     // set callback handlers
@@ -64,16 +116,36 @@ export class SenseBoxPage {
     console.log('ionViewDidLoad SenseBoxPage');
   }
 
+
+  getData() {
+    if(this.connected){
+      this.client.subscribe("accelerometer/#");  
+    }
+  }
+
+  stopData() {
+    if(this.connected){
+      this.client.unsubscribe("accelerometer/#");
+    }
+  }
+
+  deleteData() {
+    this.xdatArray = [];
+    this.xchart.series[0].setData(this.xdatArray);
+    this.ydatArray = [];
+    this.xchart.series[1].setData(this.ydatArray);
+    this.zdatArray = [];
+    this.xchart.series[2].setData(this.zdatArray);
+    this.totDatArray = [];
+    this.xchart.series[3].setData(this.totDatArray);
+  }
+
    // called when the this.client connects
   onConnect() {
+    this.connected = true;
     // Once a connection has been made, make a subscription and send a message.
     console.log("onConnect");
     console.log(this.client);
-    //this.client.subscribe("$SYS/#");
-    this.client.subscribe("accelerometer/y");
-    this.message = new Paho.MQTT.Message('1');
-    this.message.destinationName = "/World";
-    this.client.send(this.message); 
   }
 
   // called when the this.client loses its connection
@@ -82,15 +154,32 @@ export class SenseBoxPage {
     if (responseObject.errorCode !== 0) {
       console.log("onConnectionLost:"+responseObject.errorMessage);
     }
+    this.connected = false;
   }
 
   // called when a message arrives
   onMessageArrived = (message) => {
-    console.log("onMessageArrived:", message.destinationName, message.payloadString);
-    this.datArray.push(+message.payloadString);
-    // console.log(this.datArray);
-    this.chart.series[0].setData(this.datArray);
-    // this.reloadHighchart();
+    // console.log("onMessageArrived:", message.destinationName, message.payloadString);
+    if(message.destinationName === "accelerometer/x") {
+      this.xchart.series[0].addPoint(+message.payloadString, true, false, false);
+      // this.xdatArray.push(+message.payloadString);
+      // this.xchart.series[0].setData(this.xdatArray);
+    }
+    else if(message.destinationName === "accelerometer/y") {
+      // this.ydatArray.push(+message.payloadString);
+      // this.xchart.series[1].setData(this.ydatArray);
+      this.xchart.series[1].addPoint(+message.payloadString, true, false, false);
+    }
+    else if(message.destinationName === "accelerometer/z") {
+      // this.zdatArray.push(+message.payloadString);
+      // this.xchart.series[2].setData(this.zdatArray);
+      this.xchart.series[2].addPoint(+message.payloadString, true, false, false);
+    }
+    else if(message.destinationName === "accelerometer/tot") {
+      // this.totDatArray.push(+message.payloadString/9.81);
+      // this.xchart.series[3].setData(this.totDatArray);
+      this.xchart.series[3].addPoint((+message.payloadString/9.81), true, false, false);
+    }
   }
 
 //   reloadHighchart() {

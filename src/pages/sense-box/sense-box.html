@@ -9,17 +9,22 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>senseBox</ion-title>
+    <ion-title>Acceleration</ion-title>
   </ion-navbar>
 </ion-header>
-  
-  
-
 
 <ion-content padding>
+    <button (click)="getData()"  ion-button color="secondary">
+        start
+    </button>
+    <button (click)="stopData()" ion-button color="secondary">
+        stop
+    </button>
+    <button (click)="deleteData()" ion-button color="secondary">
+        delete all data
+    </button>
+
   <div id="xValues" style="display: block;"></div>
   <hr />
-  <div id="yValues" style="display: block;"></div>
-  <hr />
-  <div id="zValues" style="display: block;"></div>
+  <div id="container" style="display: block;"></div>
 </ion-content>
