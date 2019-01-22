@@ -14,6 +14,15 @@
 </ion-header>
 
 <ion-content padding>
+    <ion-item>
+        <ion-label color="primary" floating>Enter your channel</ion-label>
+        <ion-input id=channelname></ion-input>
+      </ion-item>
+      <ion-item style>
+          <ion-label color="primary" floating>Enter your MQTT-Broker Domain</ion-label>
+          <ion-input id="brokerdomain"></ion-input>
+        </ion-item>
+  
     <button (click)="getData()"  ion-button color="secondary">
         start
     </button>
@@ -23,8 +32,9 @@
     <button (click)="deleteData()" ion-button color="secondary">
         delete all data
     </button>
-
+    
   <div id="xValues" style="display: block;"></div>
   <hr />
-  <div id="container" style="display: block;"></div>
+  <div id="container" style="display: block;"></div>  
+      
 </ion-content>

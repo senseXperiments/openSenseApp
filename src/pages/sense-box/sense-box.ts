@@ -45,7 +45,8 @@ export class SenseBoxPage {
           type: 'spline',
           zoomType: 'x',
           panning: true,
-          panKey: 'shift'
+          panKey: 'shift',
+          description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.'
         },
         title: {
           text: 'Acceleration of senseBox'
@@ -55,7 +56,6 @@ export class SenseBoxPage {
             text: 'Seconds'
           },
           type: 'datetime',
-          // pointInterval: 100,
           tickInterval: 10000, // one week
           tickWidth: 0,
           gridLineWidth: 1,
@@ -118,6 +118,7 @@ export class SenseBoxPage {
 
 
   getData() {
+    console.log("get" + this.connected);
     if(this.connected){
       this.client.subscribe("accelerometer/#");  
     }
@@ -152,34 +153,35 @@ export class SenseBoxPage {
   onConnectionLost(responseObject) {
     console.log(responseObject);
     if (responseObject.errorCode !== 0) {
+      this.connected = false;
       console.log("onConnectionLost:"+responseObject.errorMessage);
     }
-    this.connected = false;
   }
 
   // called when a message arrives
   onMessageArrived = (message) => {
     // console.log("onMessageArrived:", message.destinationName, message.payloadString);
     if(message.destinationName === "accelerometer/x") {
-      this.xchart.series[0].addPoint(+message.payloadString, true, false, false);
+      this.xchart.series[0].addPoint(+message.payloadString, false, false, false);
       // this.xdatArray.push(+message.payloadString);
       // this.xchart.series[0].setData(this.xdatArray);
     }
     else if(message.destinationName === "accelerometer/y") {
       // this.ydatArray.push(+message.payloadString);
       // this.xchart.series[1].setData(this.ydatArray);
-      this.xchart.series[1].addPoint(+message.payloadString, true, false, false);
+      this.xchart.series[1].addPoint(+message.payloadString, false, false, false);
     }
     else if(message.destinationName === "accelerometer/z") {
       // this.zdatArray.push(+message.payloadString);
       // this.xchart.series[2].setData(this.zdatArray);
-      this.xchart.series[2].addPoint(+message.payloadString, true, false, false);
+      this.xchart.series[2].addPoint(+message.payloadString, false, false, false);
     }
     else if(message.destinationName === "accelerometer/tot") {
       // this.totDatArray.push(+message.payloadString/9.81);
       // this.xchart.series[3].setData(this.totDatArray);
-      this.xchart.series[3].addPoint((+message.payloadString/9.81), true, false, false);
+      this.xchart.series[3].addPoint((+message.payloadString/9.81), false, false, false);
     }
+    this.xchart.redraw(false);
   }
 
 //   reloadHighchart() {
