@@ -120,13 +120,13 @@ export class SenseBoxPage {
   getData() {
     console.log("get" + this.connected);
     if(this.connected){
-      this.client.subscribe("accelerometer/#");  
+      this.client.subscribe(this.global.channelName + "/#");  
     }
   }
 
   stopData() {
     if(this.connected){
-      this.client.unsubscribe("accelerometer/#");
+      this.client.unsubscribe(this.global.channelName + "/#");
     }
   }
 
@@ -161,22 +161,22 @@ export class SenseBoxPage {
   // called when a message arrives
   onMessageArrived = (message) => {
     // console.log("onMessageArrived:", message.destinationName, message.payloadString);
-    if(message.destinationName === "accelerometer/x") {
+    if(message.destinationName === this.global.channelName + "/x") {
       this.xchart.series[0].addPoint(+message.payloadString, false, false, false);
       // this.xdatArray.push(+message.payloadString);
       // this.xchart.series[0].setData(this.xdatArray);
     }
-    else if(message.destinationName === "accelerometer/y") {
+    else if(message.destinationName === this.global.channelName + "/y") {
       // this.ydatArray.push(+message.payloadString);
       // this.xchart.series[1].setData(this.ydatArray);
       this.xchart.series[1].addPoint(+message.payloadString, false, false, false);
     }
-    else if(message.destinationName === "accelerometer/z") {
+    else if(message.destinationName === this.global.channelName + "/z") {
       // this.zdatArray.push(+message.payloadString);
       // this.xchart.series[2].setData(this.zdatArray);
       this.xchart.series[2].addPoint(+message.payloadString, false, false, false);
     }
-    else if(message.destinationName === "accelerometer/tot") {
+    else if(message.destinationName === this.global.channelName + "/tot") {
       // this.totDatArray.push(+message.payloadString/9.81);
       // this.xchart.series[3].setData(this.totDatArray);
       this.xchart.series[3].addPoint((+message.payloadString/9.81), false, false, false);

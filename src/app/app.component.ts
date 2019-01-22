@@ -23,6 +23,7 @@ export class openSenseApp {
     // { title: 'Accelerometer', component: 'AccelerometerPage'},
     { title: 'Gyroscope', component: 'GyroscopePage' },
     { title: 'About', component: 'AboutPage' },
+    { title: 'Settings', component: 'SettingsPage' },
   ];
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {

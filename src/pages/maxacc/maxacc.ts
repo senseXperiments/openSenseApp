@@ -31,6 +31,9 @@ export class MaxaccPage {
   maxTwo: number = 0;
   chart: any;
   player: any = "none";
+  todos: string[] = ["Player 1", "Player 2"];
+  toggleNew: boolean = false;
+  newItem: string = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
@@ -97,21 +100,21 @@ export class MaxaccPage {
   }
 
 
-  getData() {
+  playerOne() {
     this.player = "one";
-    this.client.subscribe("accelerometer/#");
+    this.client.subscribe(this.global.channelName + "/#");
     setTimeout( () => {
-      this.client.unsubscribe("accelerometer/#");
+      this.client.unsubscribe(this.global.channelName + "/#");
       this.player = "none";
     }, 5000);
     
   }
 
-  stopData() {
+  playerTwo() {
     this.player = "two";
-    this.client.subscribe("accelerometer/#");
+    this.client.subscribe(this.global.channelName + "/#");
     setTimeout( () => {
-      this.client.unsubscribe("accelerometer/#");
+      this.client.unsubscribe(this.global.channelName + "/#");
       this.player = "none";
   }, 5000);
   }
@@ -148,14 +151,14 @@ export class MaxaccPage {
   onMessageArrived = (message) => {
     console.log("onMessageArrived:", message.destinationName, message.payloadString);
     if(this.player === "one") {
-      if(message.destinationName === "accelerometer/tot"){
+      if(message.destinationName === this.global.channelName + "/tot"){
         this.pOneDatArray.push(+message.payloadString);
         // if(this.maxOne < +message.payloadString) {
         //   this.maxOne = +message.payloadString;
         // }
         // this.chart.series[0].setData(this.pOneDatArray);
       }
-      else if(message.destinationName === "accelerometer/y") {
+      else if(message.destinationName === this.global.channelName + "/y") {
         this.pOneYDatArray.push(+message.payloadString * 9.81);
         this.chart.series[1].setData(this.pOneYDatArray);
         if(this.maxOne < Math.abs(+message.payloadString * 9.81)) {
@@ -164,14 +167,14 @@ export class MaxaccPage {
       }
     }
     else if(this.player === "two") {
-      if(message.destinationName === "accelerometer/tot") {
+      if(message.destinationName === this.global.channelName + "/tot") {
         this.pTwoDatArray.push(+message.payloadString);
         // if(this.maxTwo < +message.payloadString) {
         //   this.maxTwo = +message.payloadString;
         // }
         // this.chart.series[2].setData(this.pTwoDatArray);
       }
-      else if(message.destinationName === "accelerometer/y") {
+      else if(message.destinationName === this.global.channelName + "/y") {
         this.pTwoYDatArray.push(+message.payloadString * 9.81);
         this.chart.series[3].setData(this.pTwoYDatArray);
         if(this.maxTwo < Math.abs(+message.payloadString * 9.81)) {
