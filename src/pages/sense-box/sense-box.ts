@@ -185,11 +185,11 @@ export class SenseBoxPage {
       // this.xchart.series[3].setData(this.totDatArray);
       this.xchart.series[3].addPoint((+message.payloadString/9.81), false, false, false);
     }
-    this.count = this.count + 1;
-    if(this.count > 8){
+    // this.count = this.count + 1;
+    // if(this.count > 8){
       this.xchart.redraw(false);
-      this.count = 0;
-    }
+    //   this.count = 0;
+    // }
   }
 
 //   reloadHighchart() {
