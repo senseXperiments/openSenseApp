@@ -31,9 +31,7 @@
       </button>
       <div id="newPlayer">
 
-          <button (click)='toggleNew == true' ion-button color="primary">
-              Add Players &nbsp; <ion-icon name='add-circle'></ion-icon>
-          </button>
+         
 
             <ion-list inset>
               <button *ngFor="let item of todos" (click)="edit(item)" ion-button color="secondary">
@@ -41,12 +39,63 @@
               </button>
             </ion-list>
 
-              <ion-item>
-                  <ion-input [(ngModel)]='newItem' placeholder="Write Player Name Here .. "></ion-input>
-                  <button (click)='saveNew(newItem)'>Save</button>
-                  <button danger (click)='cancelNew()'>Cancel</button>
-              </ion-item>
+          <button (click)='hide()' ion-button color="primary">
+              Add Players &nbsp; <ion-icon name='add-circle'></ion-icon>
+          </button>
+          <div *ngIf="hideMe">
+            <ion-item>
+                <ion-input [(ngModel)]='newItem' placeholder="Give a player name here .. "></ion-input>
+                <button (click)='saveNew(newItem)'>Save</button>
+                <button ion-button color="danger" (click)='cancelNew()'>Cancel</button>
+            </ion-item>
+          </div>
+          <ion-item>
+              Item
+            </ion-item>
+            <ion-list-header>
+                List Header
+              </ion-list-header>
 
+              <ion-list>
+
+                  <ion-list-header>
+                    Header
+                  </ion-list-header>
+                
+                  <ion-item>
+                    Item
+                  </ion-item>
+                
+                  <ion-item detail-push>
+                    Item with Detail Arrow
+                  </ion-item>
+                
+                  <button ion-item (click)="buttonClick()">
+                    Button Item
+                  </button>
+                
+                  <ion-item-divider>
+                    Item Divider
+                  </ion-item-divider>
+                
+                  <button ion-item detail-none (click)="buttonClick()">
+                    Button Item with no Detail Arrow
+                  </button>
+                
+                  <a ion-item href="https://www.ionicframework.com">
+                    Anchor Item
+                  </a>
+                
+                  <ion-item no-lines>
+                    Item with no border
+                  </ion-item>
+                
+                  <ion-item text-wrap>
+                    Multiline text that should wrap when it is too long
+                    to fit on one line in the item.
+                  </ion-item>
+                
+                </ion-list>
       </div>
     </div>
       <div id="maxOne" style="display: block;text-align: center;margin-bottom: 2%"> <h1>Maximum Player 1: {{maxOne}} m/s&#178; <br> Maximum Player 2: {{maxTwo}} m/s&#178; </h1> </div>

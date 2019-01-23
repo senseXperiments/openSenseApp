@@ -28,6 +28,7 @@ export class SenseBoxPage {
   ychart: any;
   zchart: any;
   connected: boolean = false;
+  count: number = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
@@ -47,6 +48,9 @@ export class SenseBoxPage {
           panning: true,
           panKey: 'shift',
           description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.'
+        },
+        boost: {
+          useGPUTranslations: true
         },
         title: {
           text: 'Acceleration of senseBox'
@@ -181,7 +185,11 @@ export class SenseBoxPage {
       // this.xchart.series[3].setData(this.totDatArray);
       this.xchart.series[3].addPoint((+message.payloadString/9.81), false, false, false);
     }
-    this.xchart.redraw(false);
+    this.count = this.count + 1;
+    if(this.count > 8){
+      this.xchart.redraw(false);
+      this.count = 0;
+    }
   }
 
 //   reloadHighchart() {

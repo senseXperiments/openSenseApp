@@ -19,7 +19,7 @@ import { GlobalProvider } from "../../providers/global/global";
 })
 export class MaxaccPage {
 
-
+  hideMe: boolean = false;
   boxData: any;
   client: any;
   message: any;
@@ -130,6 +130,14 @@ export class MaxaccPage {
     this.chart.series[3].setData(this.pTwoDatArray);
     this.maxOne = 0;
     this.maxTwo = 0;
+  }
+
+  hide() {
+
+    if (this.hideMe){
+      this.hideMe = false;
+    }
+    else this.hideMe = true;
   }
 
    // called when the this.client connects
