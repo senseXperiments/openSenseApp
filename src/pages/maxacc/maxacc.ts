@@ -23,17 +23,17 @@ export class MaxaccPage {
   boxData: any;
   client: any;
   message: any;
-  pOneDatArray: number[] = [];
-  pTwoDatArray: number[] = [];
-  pOneYDatArray: number[] = [];
-  pTwoYDatArray: number[] = [];
+  // pOneDatArray = [];
+  // pTwoDatArray = [];
+  // pOneYDatArray = [];
+  // pTwoYDatArray = [];
   maxOne: number = 0;
   maxTwo: number = 0;
   chart: any;
-  player: any = "none";
-  todos: string[] = ["Player 1", "Player 2"];
+  player = {name: "none", val: 0};
+  todos = [{name: "Player 1", val: 0}, {name: "Player 2", val: 0}];
   toggleNew: boolean = false;
-  newItem: string = "";
+  newItem = {name: "", val: 0};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
@@ -42,16 +42,24 @@ export class MaxaccPage {
 
       this.chart = HighCharts.chart('values', {
         chart: {
-          type: 'spline'
+          type: 'spline',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.',
         },
         title: {
-          text: 'Accumulated Acceleration of senseBox MCU'
+          text: 'Acceleration of senseBox'
+        },
+        time: {
+          useUTC: false
         },
         xAxis: {
           title: {
-            text: 'Milliseconds * 100'
+            text: 'Time'
           },
-          tickInterval: 10, // one week
+          type: 'datetime',
+          tickInterval: 10000, // one week
           tickWidth: 0,
           gridLineWidth: 1,
           labels: {
@@ -59,28 +67,29 @@ export class MaxaccPage {
               x: 3,
               y: -3
           }
-      },
+        },
         yAxis: {
           title: {
             text: 'm/s^2'
           }
         },
-        series: [{
-            name: "Player 1",
-            data: this.pOneDatArray
-          },
-          {
-            name: "Player 1Y",
-            data: this.pOneYDatArray
-          },
-          {
-            name: "Player 2",
-            data: this.pTwoDatArray
-          },
-          {
-            name: "Player 2Y",
-            data: this.pTwoYDatArray
-          }
+        series: [
+        // {
+        //     name: "Player 1 Total",
+        //     data: this.pOneDatArray
+        //   },
+        //   {
+        //     name: "Player 1 Y-Axis",
+        //     data: this.pOneYDatArray
+        //   },
+        //   {
+        //     name: "Player 2 Total",
+        //     data: this.pTwoDatArray
+        //   },
+        //   {
+        //     name: "Player 2 Y-Axis",
+        //     data: this.pTwoYDatArray
+        //   }
           ]
       });
     
@@ -99,37 +108,57 @@ export class MaxaccPage {
     console.log('ionViewDidLoad MaxAccPage');
   }
 
-
-  playerOne() {
-    this.player = "one";
+  play(item) {
+    this.player = item;
+    this.chart.addSeries({
+      id: item.name,
+      name: item.name,
+      data: []
+    })
+    this.chart.addSeries({
+      id: item.name + "total",
+      name: item.name + " Accumulated",
+      data: []
+    })
     this.client.subscribe(this.global.channelName + "/#");
     setTimeout( () => {
       this.client.unsubscribe(this.global.channelName + "/#");
-      this.player = "none";
+      item.val = this.chart.get(this.player.name).dataMax;
+      this.player = {name: "none", val: 0};
     }, 5000);
-    
   }
 
-  playerTwo() {
-    this.player = "two";
-    this.client.subscribe(this.global.channelName + "/#");
-    setTimeout( () => {
-      this.client.unsubscribe(this.global.channelName + "/#");
-      this.player = "none";
-  }, 5000);
-  }
+  // playerOne() {
+  //   this.player = "one";
+  //   this.client.subscribe(this.global.channelName + "/#");
+  //   setTimeout( () => {
+  //     this.client.unsubscribe(this.global.channelName + "/#");
+  //     this.player = "none";
+  //   }, 5000);
+    
+  // }
+
+  // playerTwo() {
+  //   this.player = "two";
+  //   this.client.subscribe(this.global.channelName + "/#");
+  //   setTimeout( () => {
+  //     this.client.unsubscribe(this.global.channelName + "/#");
+  //     this.player = "none";
+  // }, 5000);
+  // }
 
   deleteData() {
-    this.pOneDatArray = [];
-    this.chart.series[0].setData(this.pOneDatArray);
-    this.pOneYDatArray = [];
-    this.chart.series[1].setData(this.pOneYDatArray);
-    this.pTwoYDatArray = [];
-    this.chart.series[2].setData(this.pTwoYDatArray);
-    this.pTwoDatArray = [];
-    this.chart.series[3].setData(this.pTwoDatArray);
-    this.maxOne = 0;
-    this.maxTwo = 0;
+    this.chart.destroy();
+    // this.pOneDatArray = [];
+    // this.chart.series[0].setData(this.pOneDatArray);
+    // this.pOneYDatArray = [];
+    // this.chart.series[1].setData(this.pOneYDatArray);
+    // this.pTwoYDatArray = [];
+    // this.chart.series[2].setData(this.pTwoYDatArray);
+    // this.pTwoDatArray = [];
+    // this.chart.series[3].setData(this.pTwoDatArray);
+    // this.maxOne = 0;
+    // this.maxTwo = 0;
   }
 
   hide() {
@@ -158,37 +187,33 @@ export class MaxaccPage {
   // called when a message arrives
   onMessageArrived = (message) => {
     console.log("onMessageArrived:", message.destinationName, message.payloadString);
-    if(this.player === "one") {
+    if(this.player.name != "none"){
+      
+      // var timestep = Date.now();
       if(message.destinationName === this.global.channelName + "/tot"){
-        this.pOneDatArray.push(+message.payloadString);
+        var totalSeries =  this.chart.get(this.player.name + "total");
+        var pointArray = 
+        // [timestep, 
+          +message.payloadString
+        // ];
+        totalSeries.addPoint(pointArray, true, false, false);
+        // this.pOneDatArray.push(pointArray); 
         // if(this.maxOne < +message.payloadString) {
         //   this.maxOne = +message.payloadString;
         // }
         // this.chart.series[0].setData(this.pOneDatArray);
       }
       else if(message.destinationName === this.global.channelName + "/y") {
-        this.pOneYDatArray.push(+message.payloadString * 9.81);
-        this.chart.series[1].setData(this.pOneYDatArray);
-        if(this.maxOne < Math.abs(+message.payloadString * 9.81)) {
-          this.maxOne = Math.abs(+message.payloadString* 9.81);
-        }
-      }
-    }
-    else if(this.player === "two") {
-      if(message.destinationName === this.global.channelName + "/tot") {
-        this.pTwoDatArray.push(+message.payloadString);
-        // if(this.maxTwo < +message.payloadString) {
-        //   this.maxTwo = +message.payloadString;
-        // }
-        // this.chart.series[2].setData(this.pTwoDatArray);
-      }
-      else if(message.destinationName === this.global.channelName + "/y") {
-        this.pTwoYDatArray.push(+message.payloadString * 9.81);
-        this.chart.series[3].setData(this.pTwoYDatArray);
-        if(this.maxTwo < Math.abs(+message.payloadString * 9.81)) {
-          this.maxTwo = Math.abs(+message.payloadString * 9.81);
-        }
-      }
-    }
+        var series = this.chart.get(this.player.name);
+        pointArray = 
+        // [timestep, 
+          +message.payloadString*9.81;
+        // ];
+        series.addPoint(pointArray, true, false, false);
+        // this.pOneYDatArray.push(pointArray); 
+        // this.pOneYDatArray.push(+message.payloadString * 9.81);
+        // this.chart.series[1].setData(this.pOneYDatArray);
+      } 
+    }    
   }
 }
