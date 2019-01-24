@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Paho } from 'ng2-mqtt/mqttws31';
 import * as HighCharts from 'highcharts';
+// import Boost from 'highcharts/modules/boost';
 import { GlobalProvider } from "../../providers/global/global";
+// Boost(HighCharts);
 /**
  * Generated class for the SenseBoxPage page.
  *
@@ -20,13 +22,12 @@ export class SenseBoxPage {
   boxData: any;
   client: any;
   message: any;
-  xdatArray: number[] = [];
-  ydatArray: number[] = []; 
-  zdatArray: number[] = [];
-  totDatArray: number[] = []; 
+  xdatArray = [];
+  ydatArray = []; 
+  zdatArray = [];
+  totDatArray = []; 
   xchart: any;
-  ychart: any;
-  zchart: any;
+  allValChart: any;
   connected: boolean = false;
   count: number = 0;
 
@@ -47,17 +48,27 @@ export class SenseBoxPage {
           zoomType: 'x',
           panning: true,
           panKey: 'shift',
-          description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.'
+          description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.',
+          // event: {
+          //     load: function () {
+          //       setInterval(function () {
+          //         this.xchart.redraw(false);
+          //       }, 100);
+          //     }
+          // } 
         },
-        boost: {
-          useGPUTranslations: true
-        },
+        // boost: {
+        //    seriesThreshold: 1
+        // },
         title: {
           text: 'Acceleration of senseBox'
         },
+        time: {
+          useUTC: false
+        },
         xAxis: {
           title: {
-            text: 'Seconds'
+            text: 'Time'
           },
           type: 'datetime',
           tickInterval: 10000, // one week
@@ -83,26 +94,110 @@ export class SenseBoxPage {
       },
         series: [{
             name: "X-Axis",
+            data: [],
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
+          },
+          {
+            name: "Y-Axis",
+            data: [],
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
+          },
+          {
+            name: "Z-Axis",
+            data: [],
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
+          },
+          { name: "Total",
+            data: [],
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
+          }]
+      });
+
+      this.allValChart = HighCharts.chart('allValues', {
+        chart: {
+          type: 'spline',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.',
+          // event: {
+          //     load: function () {
+          //       setInterval(function () {
+          //         this.xchart.redraw(false);
+          //       }, 100);
+          //     }
+          // } 
+        },
+        // boost: {
+        //    seriesThreshold: 1
+        // },
+        title: {
+          text: 'Full measurement period of senseBox acceleration'
+        },
+        time: {
+          useUTC: false
+        },
+        xAxis: {
+          title: {
+            text: 'Time'
+          },
+          type: 'datetime',
+          tickInterval: 10000, // one week
+          tickWidth: 0,
+          gridLineWidth: 1,
+          labels: {
+              align: 'left',
+              x: 3,
+              y: -3
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'G-Force'
+          }
+        },
+        plotOptions: {
+          series: {
+              marker: {
+                  enabled: false
+              },
+          turboThreshold: 0
+          }
+      },
+        series: [{
+            name: "X-Axis",
             data: this.xdatArray,
-            pointStart: Date.now(), // first of April
-            pointInterval: 100
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
           },
           {
             name: "Y-Axis",
             data: this.ydatArray,
-            pointStart: Date.now(), // first of April
-        pointInterval: 100,
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
           },
           {
             name: "Z-Axis",
             data: this.zdatArray,
-            pointStart: Date.now(), // first of April
-        pointInterval: 100
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
           },
           { name: "Total",
             data: this.totDatArray,
-            pointStart: Date.now(), // first of April
-        pointInterval: 100
+            // pointStart: Date.now(), // first of April
+            // pointInterval: 100,
+            // boostThreshold: 1
           }]
       });
     
@@ -120,7 +215,7 @@ export class SenseBoxPage {
     console.log('ionViewDidLoad SenseBoxPage');
   }
 
-
+  // start subscribing data channel = data starts incoming
   getData() {
     console.log("get" + this.connected);
     if(this.connected){
@@ -128,21 +223,37 @@ export class SenseBoxPage {
     }
   }
 
+  // unsubscribe data channel = no data incoming anymore
   stopData() {
     if(this.connected){
       this.client.unsubscribe(this.global.channelName + "/#");
     }
   }
-
+  
+  // delete all data from charts and storage arrays
   deleteData() {
+    this.xchart.series[0].setData([]);
     this.xdatArray = [];
-    this.xchart.series[0].setData(this.xdatArray);
+    this.allValChart.series[0].setData(this.xdatArray);
+    this.xchart.series[1].setData([]);
     this.ydatArray = [];
-    this.xchart.series[1].setData(this.ydatArray);
+    this.allValChart.series[1].setData(this.ydatArray);
+    this.xchart.series[2].setData([]);
     this.zdatArray = [];
-    this.xchart.series[2].setData(this.zdatArray);
+    this.allValChart.series[2].setData(this.zdatArray);
     this.totDatArray = [];
-    this.xchart.series[3].setData(this.totDatArray);
+    this.xchart.series[3].setData([]);
+    this.allValChart.series[3].setData(this.totDatArray);
+  }
+
+
+  // shows all the values that were measured during a measurement period 
+  showAllValues() {   
+    this.allValChart.series[0].setData(this.xdatArray, false);    
+    this.allValChart.series[1].setData(this.ydatArray, false);    
+    this.allValChart.series[2].setData(this.zdatArray, false);    
+    this.allValChart.series[3].setData(this.totDatArray, false);
+    this.allValChart.redraw(false);
   }
 
    // called when the this.client connects
@@ -166,30 +277,46 @@ export class SenseBoxPage {
   onMessageArrived = (message) => {
     // console.log("onMessageArrived:", message.destinationName, message.payloadString);
     if(message.destinationName === this.global.channelName + "/x") {
-      this.xchart.series[0].addPoint(+message.payloadString, false, false, false);
-      // this.xdatArray.push(+message.payloadString);
+      var timestep = Date.now();
+      var pointArray = [timestep, +message.payloadString];
+      var series = this.xchart.series[0];
+      var shift = series.yData.length > 50;
+      this.xchart.series[0].addPoint(pointArray, true, shift, false);
+      this.xdatArray.push(pointArray);
       // this.xchart.series[0].setData(this.xdatArray);
     }
     else if(message.destinationName === this.global.channelName + "/y") {
-      // this.ydatArray.push(+message.payloadString);
       // this.xchart.series[1].setData(this.ydatArray);
-      this.xchart.series[1].addPoint(+message.payloadString, false, false, false);
+      timestep = Date.now();
+      pointArray = [timestep, +message.payloadString];
+      series = this.xchart.series[1];
+      shift = series.yData.length > 50;
+      this.xchart.series[1].addPoint(pointArray, false, shift, false);    
+      this.ydatArray.push(pointArray);
     }
     else if(message.destinationName === this.global.channelName + "/z") {
-      // this.zdatArray.push(+message.payloadString);
       // this.xchart.series[2].setData(this.zdatArray);
-      this.xchart.series[2].addPoint(+message.payloadString, false, false, false);
+      timestep = Date.now();
+      pointArray = [timestep, +message.payloadString];
+      series = this.xchart.series[2];
+      shift = series.yData.length > 50;
+      this.xchart.series[2].addPoint(pointArray, false, shift, false);    
+      this.zdatArray.push(pointArray);
     }
     else if(message.destinationName === this.global.channelName + "/tot") {
-      // this.totDatArray.push(+message.payloadString/9.81);
       // this.xchart.series[3].setData(this.totDatArray);
-      this.xchart.series[3].addPoint((+message.payloadString/9.81), false, false, false);
+      timestep = Date.now();
+      pointArray = [timestep, +message.payloadString/9.81];
+      series = this.xchart.series[3];
+      shift = series.yData.length > 50;
+      this.xchart.series[3].addPoint(pointArray, false, shift, false);    
+      this.totDatArray.push(pointArray);
     }
-    this.count = this.count + 1;
-    if(this.count > 4){
-     this.xchart.redraw(false);
-      this.count = 0;
-    }
+    // this.count = this.count + 1;
+    // if(this.count > 5){
+    //  this.xchart.redraw(false);
+    //   this.count = 0;
+    // }
   }
 
 //   reloadHighchart() {

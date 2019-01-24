@@ -10,8 +10,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GlobalProvider {
 
-  public mqttip: string = "localhost";
-  public channelName: string = "";
+  public mqttip: string = "10.0.1.101";
+  public channelName: string = "accelerometer";
 
   constructor(public http: HttpClient) {
     console.log('Hello GlobalProvider Provider');

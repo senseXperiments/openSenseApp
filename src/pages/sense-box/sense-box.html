@@ -14,14 +14,14 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-item>
+    <!-- <ion-item>
       <ion-label color="primary" floating>Enter your channel</ion-label>
       <ion-input id=channelname></ion-input>
     </ion-item>
     <ion-item>
       <ion-label color="primary" floating>Enter your MQTT-Broker Domain</ion-label>
       <ion-input id="brokerdomain"></ion-input>
-    </ion-item>
+    </ion-item> -->
   
     <button (click)="getData()"  ion-button color="secondary">
         start
@@ -29,12 +29,15 @@
     <button (click)="stopData()" ion-button color="secondary">
         stop
     </button>
-    <button (click)="deleteData()" ion-button color="secondary">
+    <button (click)="deleteData()" ion-button color="danger">
         delete all data
     </button>
     
   <div id="xValues" style="display: block;"></div>
   <hr />
-  <div id="container" style="display: block;"></div>  
+  <button (click)="showAllValues()" ion-button color="secondary">
+    Show full data</button>
+  <div id="allValues" style="display: block;"></div>  
+  <hr />
       
 </ion-content>

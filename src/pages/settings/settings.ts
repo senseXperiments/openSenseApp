@@ -17,7 +17,7 @@ import { GlobalProvider } from "../../providers/global/global";
 export class SettingsPage {
 
   public mqttip: string = this.global.mqttip;
-  public channelName: string = 'accelerometer';
+  public channelName: string = this.global.channelName;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
