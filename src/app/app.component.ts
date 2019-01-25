@@ -6,6 +6,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import {Storage} from "@ionic/storage";
+import { SaveChecksProvider } from '../providers/save-checks/save-checks';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -28,7 +30,7 @@ export class openSenseApp {
     { title: 'Settings', component: 'SettingsPage' },
   ];
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public saveChecks: SaveChecksProvider) {
     
   
     platform.ready().then(() => {
@@ -43,8 +45,10 @@ export class openSenseApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     if(page.title == 'Game'){
-      this.storage.get('introShown').then((result) => {
-        if(result){}
+      this.storage.get('showAgain').then((result) => {
+        if(result){
+          this.nav.setRoot(page.component);
+        }
         else{
           this.nav.setRoot("GameIntroPage");
         }

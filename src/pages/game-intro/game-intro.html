@@ -5,16 +5,15 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    
-    <ion-title> 
-        <ion-icon name="ios-american-football"></ion-icon>
-           The Quarterback Challenge
-           
-      </ion-title>
-  </ion-navbar>
-
+    <ion-navbar>
+        <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            <ion-icon icon-left name="ios-american-football" ></ion-icon>
+          The Quarterback Challenge
+        </ion-title>
+      </ion-navbar>
 </ion-header>
 
 
@@ -22,7 +21,7 @@
     <ion-slides pager="true" [options]="slideOpts">
         <ion-slide>
            
-          <ion-card>
+            <ion-card>
                 <ion-item>
                   <ion-avatar item-left>
                     <img src="../../assets/imgs/sensebox_wort_und_logo_no_bg.svg" />
@@ -32,21 +31,22 @@
                 </ion-item>
                 <ion-row>
                     <ion-col>
-                      <img src="../../assets/imgs/image6.jpg" alt="Materials" style="height:220px">
+                       <img src="../../assets/imgs/image6.jpg" alt="Materials" style="height:220px">
                     </ion-col>
                     <ion-col>
-                      <img src="../../assets/imgs/image5.jpg" alt="soft-football" style="height:220px">
+                        <img src="../../assets/imgs/image5.jpg" alt="soft-football" style="height:220px">
                     </ion-col>
                     <ion-col>
-                      <img src="../../assets/imgs/image2.jpg" alt="protection case" style="height:220px">
+                        <img src="../../assets/imgs/image2.jpg" alt="protection case" style="height:220px">
                     </ion-col>
-                  </ion-row>
+                </ion-row>
                 <!-- <img class="intropictures" src="../../assets/imgs/image6.jpg" />
                 <img class="intropictures" src="../../assets/imgs/image5.jpg" />
                 <img class="intropictures" src="../../assets/imgs/image2.jpg" /> -->
           
                 <ion-card-content>
-                  For this game you need several additional materials besides your senseBox MCU. You need a Micro-USB cable, a small powerbank, a soft-football and an additional protective case.
+                  For this game you need several additional materials besides your senseBox MCU. <br>
+                  You need a Micro-USB cable, a small powerbank, a soft-football and an additional protective case.
                     <!-- <p>Put your senseBox in a soft-football and compete against fellow players! 
                       Hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 1</button>
                       and you will get about three seconds to throw the ball and accelerate the senseBox MCU as fast as possible.
@@ -56,21 +56,189 @@
                 </ion-card-content>
           
                 <ion-row>
-                  <ion-col>
-                    <button ion-button icon-left clear small>
-                      <ion-icon name="american-football"></ion-icon>
-                      <div>Step 1</div>
-                    </button>
-                  </ion-col>
+                    <ion-col>
+                        <button ion-button icon-left clear small [disabled]="true">
+                            <ion-icon name="american-football"></ion-icon>
+                            <div>Step 1</div>
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button icon-right clear small (click)="skip()">
+                            Skip introduction 
+                            <ion-icon name="fastforward"></ion-icon>
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button icon-left clear small>
+                            <ion-label>Don't show this again</ion-label>
+                            <ion-checkbox  [(ngModel)]="saveChecks.showAgain" (click)="noShowAgain()"></ion-checkbox>
+                          </button>
+                  </ion-col>      
                 </ion-row>
+            </ion-card>
+        </ion-slide>
+        <ion-slide>
+            <ion-card>
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="../../assets/imgs/sensebox_wort_und_logo_no_bg.svg" />
+                  </ion-avatar>
+                  <!-- <h2>Who's got what it takes to be a future NFL Quarterback?</h2> -->
+                  <p>senseBox Games</p>
+                </ion-item>
+                <ion-row>
+                    <ion-col >
+                        <img src="../../assets/imgs/image1.jpg" alt="Materials" style="height:220px;margin:auto;display: block;">
+                    </ion-col>
+                    <ion-col>
+                        <img src="../../assets/imgs/image3.jpg" alt="soft-football" style="height:220px;margin:auto;display: block;">
+                    </ion-col>
+                </ion-row>
+                <!-- <img class="intropictures" src="../../assets/imgs/image6.jpg" />
+                <img class="intropictures" src="../../assets/imgs/image5.jpg" />
+                <img class="intropictures" src="../../assets/imgs/image2.jpg" /> -->
           
-              </ion-card>
+                <ion-card-content>
+                    Connect your senseBox MCU to the powerbank using your Micro-USB cable. Put it in your protective case. <br>
+                    Next, cut a slot in the softball and put the protective case with senseBox MCU and powerbank in the softball.
+                    <!-- <p>Put your senseBox in a soft-football and compete against fellow players! 
+                      Hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 1</button>
+                      and you will get about three seconds to throw the ball and accelerate the senseBox MCU as fast as possible.
+                    Then it's your opponent's turn. Hand him the football with senseBox MCU and hit 
+                    <button ion-button color="secondary" style="font-size:0.5em">Start Player 2</button> 
+                    and you will see if your opponent can beat your acceleration record!</p>         -->
+                </ion-card-content>
+          
+                <ion-row>
+                    <ion-col>
+                        <button ion-button icon-left clear small [disabled]="true">
+                            <ion-icon name="american-football"></ion-icon>
+                            <div>Step 2</div>
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button icon-right clear small (click)="skip()">
+                            <div>Skip introduction</div>
+                            <ion-icon name="fastforward"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
         </ion-slide>
         <ion-slide>
-          <h1>Slide 2</h1>
+            <ion-card>
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="../../assets/imgs/sensebox_wort_und_logo_no_bg.svg" />
+                  </ion-avatar>
+                  <!-- <h2>Who's got what it takes to be a future NFL Quarterback?</h2> -->
+                  <p>senseBox Games</p>
+                </ion-item>
+                <ion-row>
+                    <ion-col >
+                        <img src="../../assets/imgs/image8.jpg" alt="Materials" style="height:220px;margin:auto;display: block;">
+                    </ion-col>
+                    <ion-col>
+                        <img src="../../assets/imgs/image7.jpg" alt="soft-football" style="height:220px;margin:auto;display: block;">
+                    </ion-col>
+                </ion-row>
+                <!-- <img class="intropictures" src="../../assets/imgs/image6.jpg" />
+                <img class="intropictures" src="../../assets/imgs/image5.jpg" />
+                <img class="intropictures" src="../../assets/imgs/image2.jpg" /> -->
+          
+                <ion-card-content>
+                    Make sure that the senseBox is covered as well as possible inside the softball in order to prevent damages. <br>
+                    Then, tape the slot in the softball with a tape strip.
+
+                    <!-- <p>Put your senseBox in a soft-football and compete against fellow players! 
+                      Hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 1</button>
+                      and you will get about three seconds to throw the ball and accelerate the senseBox MCU as fast as possible.
+                    Then it's your opponent's turn. Hand him the football with senseBox MCU and hit 
+                    <button ion-button color="secondary" style="font-size:0.5em">Start Player 2</button> 
+                    and you will see if your opponent can beat your acceleration record!</p>         -->
+                </ion-card-content>
+          
+                <ion-row>
+                    <ion-col>
+                        <button ion-button icon-left clear small [disabled]="true">
+                            <ion-icon name="american-football"></ion-icon>
+                            <div>Step 3</div>
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button icon-right clear small (click)="skip()">
+                            <div>Skip introduction</div>
+                            <ion-icon name="fastforward"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
         </ion-slide>
         <ion-slide>
-          <h1>Slide 3</h1>
+            <ion-card>
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="../../assets/imgs/sensebox_wort_und_logo_no_bg.svg" />
+                  </ion-avatar>
+                  <!-- <h2>Who's got what it takes to be a future NFL Quarterback?</h2> -->
+                  <p>senseBox Games</p>
+                </ion-item>
+          
+                <ion-card-content>
+                    <ion-item>Now you successfully prepared your american senseBall. But wait, do you want to play alone? 
+                      Find yourself a worthy opponent or even several oppenents.
+                      You can use 
+                      <button [disabled]='true'  ion-button color="primary">
+                        Add Players &nbsp; <ion-icon name='add-circle'></ion-icon>
+                      </button> 
+                      to add as many players as you like. </ion-item>
+                      <ion-item>Give the palyer's name and optionally configure the channel name if they use another senseBall
+                          as the one you configured in your <br>
+                          <button ion-button icon-left clear small (click)='loadSettings()'>
+                            <ion-icon name="settings"></ion-icon>
+                            <div>Settings</div>
+                          </button>.</ion-item> 
+                    
+                      <br>
+                      If you're done, you are ready to start the game. Use <br> 
+                      <button  [disabled]='true' ion-button color="secondary">
+                          Start Player X 
+                        </button> <br>
+                      and the Player X gets 5 seconds to throw the senseBall as fast as possible.
+                      After the 5 seconds, you can press the next <br>
+                      <button  [disabled]='true' ion-button color="secondary">
+                          Start Player .. 
+                        </button> <br>
+                        button to start the next player's 5 seconds to throw the ball. <br>
+                        If you are done you will see your results, a rating and a ranking.
+                        Have fun!
+                      
+                    
+
+
+                    <!-- <p>Put your senseBox in a soft-football and compete against fellow players! 
+                      Hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 1</button>
+                      and you will get about three seconds to throw the ball and accelerate the senseBox MCU as fast as possible.
+                    Then it's your opponent's turn. Hand him the football with senseBox MCU and hit 
+                    <button ion-button color="secondary" style="font-size:0.5em">Start Player 2</button> 
+                    and you will see if your opponent can beat your acceleration record!</p>         -->
+                </ion-card-content>
+          
+                <ion-row>
+                    <ion-col>
+                        <button ion-button icon-left clear small [disabled]="true">
+                            <ion-icon name="american-football"></ion-icon>
+                            <div>Step 4</div>
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button icon-right clear small (click)="skip()">
+                            <div>Skip introduction</div>
+                            <ion-icon name="fastforward"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
         </ion-slide>
       </ion-slides>
 </ion-content>

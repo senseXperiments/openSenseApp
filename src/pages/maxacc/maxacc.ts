@@ -108,6 +108,9 @@ export class MaxaccPage {
     console.log(this.client);
     console.log('ionViewDidLoad MaxAccPage');
   }
+  showIntroduction() {
+    this.navCtrl.push('GameIntroPage');
+  }
 
   saveNew(item) {
     

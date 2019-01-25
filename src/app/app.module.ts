@@ -11,6 +11,7 @@ import { ApiProvider } from '../providers/api/api';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalProvider } from '../providers/global/global';
 import { IonicStorageModule } from '@ionic/storage';
+import { SaveChecksProvider } from '../providers/save-checks/save-checks';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { IonicStorageModule } from '@ionic/storage';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider,
-    GlobalProvider
+    GlobalProvider,
+    SaveChecksProvider
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
