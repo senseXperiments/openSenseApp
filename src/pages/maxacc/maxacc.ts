@@ -15,10 +15,11 @@ import { GlobalProvider } from "../../providers/global/global";
 @IonicPage()
 @Component({
   selector: 'page-maxacc',
-  templateUrl: 'maxacc.html',
+  templateUrl: 'maxacc.html'
 })
 export class MaxaccPage {
-
+  cards: any;
+  category: string = 'gear';
   hideMe: boolean = false;
   boxData: any;
   client: any;
@@ -108,6 +109,10 @@ export class MaxaccPage {
     console.log('ionViewDidLoad MaxAccPage');
   }
 
+  saveNew(item) {
+    
+  }
+
   play(item) {
     this.player = item;
     this.chart.addSeries({
@@ -128,25 +133,7 @@ export class MaxaccPage {
     }, 5000);
   }
 
-  // playerOne() {
-  //   this.player = "one";
-  //   this.client.subscribe(this.global.channelName + "/#");
-  //   setTimeout( () => {
-  //     this.client.unsubscribe(this.global.channelName + "/#");
-  //     this.player = "none";
-  //   }, 5000);
-    
-  // }
-
-  // playerTwo() {
-  //   this.player = "two";
-  //   this.client.subscribe(this.global.channelName + "/#");
-  //   setTimeout( () => {
-  //     this.client.unsubscribe(this.global.channelName + "/#");
-  //     this.player = "none";
-  // }, 5000);
-  // }
-
+  
   deleteData() {
     this.chart.destroy();
     // this.pOneDatArray = [];

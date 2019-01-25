@@ -14,6 +14,18 @@
   </ion-header>
   
   <ion-content padding>
+      <ion-segment [(ngModel)]="category">
+          <ion-segment-button value="gear">
+              Gear
+          </ion-segment-button>
+          <ion-segment-button value="clothing">
+              Clothing
+          </ion-segment-button>
+          <ion-segment-button value="nutrition">
+              Nutrition
+          </ion-segment-button>
+      </ion-segment>
+
     <div style="display: block;text-align: center;margin-bottom: 2%"> 
       <h2> Who's got what it takes to be a future NFL Quarterback? </h2>
       <p style="font-size: 1.3em; margin-left: 10%; margin-right: 10%"> Put your senseBox in the senseBox soft football and compete against fellow players! Hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 1</button> and you will get about three seconds to throw the ball and accelerate the senseBox MCU as fast as possible.

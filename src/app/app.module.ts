@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -10,17 +10,19 @@ import { PendulumPage } from '../pages/pendulum/pendulum';
 import { ApiProvider } from '../providers/api/api';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalProvider } from '../providers/global/global';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
     openSenseApp,
     HomePage,
-    PendulumPage,
+    PendulumPage
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
-    IonicModule.forRoot(openSenseApp)
+    IonicModule.forRoot(openSenseApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -34,6 +36,9 @@ import { GlobalProvider } from '../providers/global/global';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider,
     GlobalProvider
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class AppModule {}
