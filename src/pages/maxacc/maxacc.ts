@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Paho } from 'ng2-mqtt/mqttws31';
 import * as HighCharts from 'highcharts';
 import { GlobalProvider } from "../../providers/global/global";
@@ -21,22 +21,20 @@ export class MaxaccPage {
   cards: any;
   category: string = 'gear';
   hideMe: boolean = false;
+  showPlayers: boolean = true;
   boxData: any;
   client: any;
   message: any;
-  // pOneDatArray = [];
-  // pTwoDatArray = [];
-  // pOneYDatArray = [];
-  // pTwoYDatArray = [];
   maxOne: number = 0;
   maxTwo: number = 0;
   chart: any;
-  player = {name: "none", val: 0};
-  todos = [{name: "Player 1", val: 0}, {name: "Player 2", val: 0}];
+  player = {name: "none", val: 0, disabled: false};
+  todos = [{name: "Player 1", val: 0, disabled: false}, {name: "Player 2", val: 0, disabled: false}];
   newItem = "";
-  disableStart: boolean = false;
+  gameRunning = false;
+  winner = {name : "", val: 0};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider, public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -108,66 +106,136 @@ export class MaxaccPage {
     console.log(this.client);
     console.log('ionViewDidLoad MaxAccPage');
   }
+
+  /* shows Introduction slides */
   showIntroduction() {
     this.navCtrl.push('GameIntroPage');
   }
 
+  /* save and create new player */
   saveNew(item) {
-    var newPlayer = {name: item, val: 0};
+    var newPlayer = {name: item, val: 0, disabled: false};
     this.todos.push(newPlayer);
     this.cancelNew();
   }
 
+  /* cancel creation of new player */
   cancelNew() {
     this.hideMe = false;
     this.newItem = '';
   }
 
-  play(item) {
-    item.disableStart = true;
-    this.disableStart = true;
-    this.player = item;
-    this.chart.addSeries({
-      id: item.name,
-      name: item.name,
-      data: []
-    })
-    this.chart.addSeries({
-      id: item.name + "total",
-      name: item.name + " Accumulated",
-      data: []
-    })
-    this.client.subscribe(this.global.channelName + "/#");
-    setTimeout( () => {
-      this.client.unsubscribe(this.global.channelName + "/#");
-      item.val = this.chart.get(this.player.name).dataMax;
-      this.player = {name: "none", val: 0};
-      this.disableStart = false;
-    }, 5000);
-  }
-
-  
-  deleteData() {
-    this.chart.destroy();
-    // this.pOneDatArray = [];
-    // this.chart.series[0].setData(this.pOneDatArray);
-    // this.pOneYDatArray = [];
-    // this.chart.series[1].setData(this.pOneYDatArray);
-    // this.pTwoYDatArray = [];
-    // this.chart.series[2].setData(this.pTwoYDatArray);
-    // this.pTwoDatArray = [];
-    // this.chart.series[3].setData(this.pTwoDatArray);
-    // this.maxOne = 0;
-    // this.maxTwo = 0;
-  }
-
-  hide() {
-
+  /* toggle-display input for new player */
+  hideAddPlayer() {
+    // if input is hided display it 
     if (this.hideMe){
       this.hideMe = false;
     }
+    // otherwise hide it 
     else this.hideMe = true;
   }
+
+  togglePlayButton() {
+    if (this.showPlayers){
+      this.showPlayers = false;
+    }
+    // otherwise hide it 
+    else this.showPlayers = true;
+  }
+
+  /* creates Toast for impatiently players */
+  async gameRunningAlert(name) {
+      let toast = this.toastCtrl.create({
+        message: 'Sorry ' + name + ' is still playing. Please wait until he or she finished his game time.' ,
+        duration: 3000,
+        position: 'middle'
+      });
+      toast.present();
+    }
+
+    async winnerIs() {
+      if(this.winner.name == ""){
+        let toast = this.toastCtrl.create({
+          message: "Oops! You need to start the game first before I can determine who has won!",
+          showCloseButton: true,
+          position: 'middle'
+        });
+        toast.present();
+      }
+      else{
+        let toast = this.toastCtrl.create({
+          message: "And the winner is " + this.winner.name + " with a maximum acceleration of " + this.winner.val + "m/s^2",
+          showCloseButton: true,
+          position: 'middle'
+        });
+        toast.present();
+      }
+    }
+
+    deletePlayer(idx) {
+      this.todos.splice(idx,idx);
+    }
+
+  /* starts the game for one player */
+  play(item) {
+    // if there is already some player playing, give toast with wait instructions
+    if(this.gameRunning){
+      this.gameRunningAlert(item.name);
+    }
+    // otherwise play
+    else{
+      // game is Running
+      this.gameRunning = true;
+      // disable start button for current player
+      item.disabled = "true";
+      // set current player to player that was started by button click
+      this.player = item;
+      // add a series with player name as id and name and empty data 
+      this.chart.addSeries({
+        id: item.name,
+        name: item.name,
+        data: []
+      })
+      // add another series with player name + 'total' as id and name + ' Accumulated' as name and empty data 
+      this.chart.addSeries({
+        id: item.name + "total",
+        name: item.name + " Accumulated",
+        data: []
+      })
+      //subscribe to global channelname
+      this.client.subscribe(this.global.channelName + "/#");
+      // wait 5 seconds
+      setTimeout( () => {
+        // unsubscribe global channelname
+        this.client.unsubscribe(this.global.channelName + "/#");
+        // set maximum value of series to high score
+        var highscore = Math.max(Math.abs(this.chart.get(item.name).dataMax), Math.abs(this.chart.get(item.name).dataMin));
+        if(highscore > this.winner.val){
+          this.winner.val=highscore;
+          this.winner.name = item.name;
+        }
+        item.val = highscore;
+        // reset current player variable
+        this.player = {name: "none", val: 0, disabled: false};
+        // game time is over next player allowed to play
+        this.gameRunning = false;
+      }, 5000);
+    }
+  }
+
+  /* resets the game */
+  deleteData() {
+    // reset all highscores and re-enable start buttons
+    for(var i = 0; i < this.chart.series.length/2; i++){
+      this.todos[i].val = 0;
+      this.todos[i].disabled = false; 
+    }
+    // remove all series from chart
+    while(this.chart.series.length > 0)
+    this.chart.series[0].remove(true);  
+  } 
+
+  
 
    // called when the this.client connects
   onConnect() {

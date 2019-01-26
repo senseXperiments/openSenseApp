@@ -22,30 +22,33 @@
           Show me the introduction!
         </div> 
       </button>
-      <!-- <p style="font-size: 1.3em; margin-left: 10%; margin-right: 10%"> Put your senseBox in the senseBox soft football and compete against fellow players! Hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 1</button> and you will get about three seconds to throw the ball and accelerate the senseBox MCU as fast as possible.
-      Then it's your opponent's turn. Hand him the football with senseBox MCU and hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 2</button> and you will see if your opponent can beat your acceleration record!</p>
-      -->
     </div> 
     <div style="display: block;text-align: center;margin-bottom: 2%">
-      <!-- <button (click)="playerOne()"  ion-button color="secondary">
-          Start Player 1
-      </button>
-      <button (click)="playerTwo()" ion-button color="secondary">
-          Start Player 2
-      </button> -->
-      <button (click)="deleteData()" ion-button color="danger">
-          Reset Game
-      </button>
-      <div id="newPlayer">
-        <ion-list inset>
-          <button *ngFor="let item of todos" (click)="play(item)" ion-button color="secondary">
-            Start {{item.name}}
-          </button>
-        </ion-list>
-
-        <button (click)='hide()' ion-button color="primary">
+        <button (click)='hideAddPlayer()' ion-button color="primary">
             Add Players &nbsp; <ion-icon name='add-circle'></ion-icon>
         </button>
+        <button (click)="deleteData()" ion-button color="danger">
+            Reset Game
+        </button>
+        <button (click)="togglePlayButton()" ion-button color="dark">
+           Edit Players
+        </button>
+      <div id="newPlayer">
+        <div *ngIf="showPlayers">
+            <ion-list inset>
+                <button *ngFor="let item of todos" (click)="play(item)" ion-button color="secondary" [disabled]="item.disabled">
+                  Start {{item.name}}
+                </button>
+            </ion-list>
+        </div>
+          
+        <div *ngIf="showPlayers==false">
+            <ion-list inset>
+              <button *ngFor="let item of todos; let idx = index" (click)="deletePlayer(idx)" ion-button color="danger" [disabled]="item.disabled">
+                Delete {{item.name}}
+              </button>
+            </ion-list>
+        </div>        
         <div *ngIf="hideMe">
           <ion-item>
               <ion-input [(ngModel)]='newItem' placeholder="Give a player name here .. "></ion-input>
@@ -53,12 +56,28 @@
               <button  item-end ion-button style="align-self: flex-end" color="danger" (click)='cancelNew()'>Cancel</button>
           </ion-item>
         </div>
+        <button (click)="winnerIs()" ion-button color="primary">
+            Show me the winner!
+        </button>
       </div>
+
     </div>
     <div id="values" style="display: block;"></div>
-    <hr />
-    <ion-list inset>
-      <div *ngFor="let item of todos" style="display: block;text-align: center;margin-bottom: 2%"> <h1>{{item.name}}: {{item.val}} m/s&#178; </h1> </div>
+    
+    <ion-item-divider >
+        <ion-label color="primary">
+            HIGH SCORES
+      </ion-label>   
+    </ion-item-divider>
+
+    <ion-list inset >
+      <!-- <div *ngFor="let item of todos" style="display: block;text-align: center;margin-bottom: 2%"> -->
+      <ion-item-divider *ngFor="let item of todos" >
+        <ion-label color="primary">
+             {{item.name}}: {{item.val}} m/s&#178;   
+            <!-- </div> -->
+        </ion-label>   
+      </ion-item-divider>
     </ion-list>
      
   </ion-content>

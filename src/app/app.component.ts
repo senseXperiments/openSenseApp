@@ -8,7 +8,6 @@ import { HomePage } from '../pages/home/home';
 import {Storage} from "@ionic/storage";
 import { SaveChecksProvider } from '../providers/save-checks/save-checks';
 
-
 @Component({
   templateUrl: 'app.html'
 })
