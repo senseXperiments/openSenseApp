@@ -33,8 +33,8 @@ export class MaxaccPage {
   chart: any;
   player = {name: "none", val: 0};
   todos = [{name: "Player 1", val: 0}, {name: "Player 2", val: 0}];
-  toggleNew: boolean = false;
-  newItem = {name: "", val: 0};
+  newItem = "";
+  disableStart: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
@@ -113,10 +113,19 @@ export class MaxaccPage {
   }
 
   saveNew(item) {
-    
+    var newPlayer = {name: item, val: 0};
+    this.todos.push(newPlayer);
+    this.cancelNew();
+  }
+
+  cancelNew() {
+    this.hideMe = false;
+    this.newItem = '';
   }
 
   play(item) {
+    item.disableStart = true;
+    this.disableStart = true;
     this.player = item;
     this.chart.addSeries({
       id: item.name,
@@ -133,6 +142,7 @@ export class MaxaccPage {
       this.client.unsubscribe(this.global.channelName + "/#");
       item.val = this.chart.get(this.player.name).dataMax;
       this.player = {name: "none", val: 0};
+      this.disableStart = false;
     }, 5000);
   }
 

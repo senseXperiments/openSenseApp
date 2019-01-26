@@ -39,7 +39,7 @@
       <div id="newPlayer">
         <ion-list inset>
           <button *ngFor="let item of todos" (click)="play(item)" ion-button color="secondary">
-            {{item.name}}
+            Start {{item.name}}
           </button>
         </ion-list>
 
@@ -48,17 +48,18 @@
         </button>
         <div *ngIf="hideMe">
           <ion-item>
-              <ion-input [(ngModel)]='newItem.name' placeholder="Give a player name here .. "></ion-input>
-              <button item-end ion-button style="align-self: flex-end" (click)='saveNew(newItem.name)'>Save</button>
+              <ion-input [(ngModel)]='newItem' placeholder="Give a player name here .. "></ion-input>
+              <button item-end ion-button style="align-self: flex-end" (click)='saveNew(newItem)'>Save</button>
               <button  item-end ion-button style="align-self: flex-end" color="danger" (click)='cancelNew()'>Cancel</button>
           </ion-item>
         </div>
       </div>
     </div>
+    <div id="values" style="display: block;"></div>
+    <hr />
     <ion-list inset>
       <div *ngFor="let item of todos" style="display: block;text-align: center;margin-bottom: 2%"> <h1>{{item.name}}: {{item.val}} m/s&#178; </h1> </div>
     </ion-list>
-      <div id="values" style="display: block;"></div>
-    <hr />
+     
   </ion-content>
   
