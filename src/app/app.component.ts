@@ -19,15 +19,17 @@ export class openSenseApp {
 
   pages: Array<{title: string, component: any}> = [
     { title: 'Home', component: HomePage },
-    { title: 'Acceleration', component: 'SenseBoxPage' },
+    { title: 'Scientists Mode', component: 'SenseBoxPage' },
     { title: 'Game', component: 'MaxaccPage' },
     // { title: 'Games', component: 'GamesPage' },
     // { title: 'Experiments', component: 'ExperimentsPage' },
     // { title: 'Accelerometer', component: 'AccelerometerPage'},
     { title: 'Gyroscope', component: 'GyroscopePage' },
-    { title: 'About', component: 'AboutPage' },
     { title: 'Settings', component: 'SettingsPage' },
+    { title: 'About us', component: 'AboutPage' }
   ];
+    
+   
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public saveChecks: SaveChecksProvider) {
     

@@ -9,19 +9,25 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Acceleration</ion-title>
+    <ion-title>Scientists Mode</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <!-- <ion-item>
-      <ion-label color="primary" floating>Enter your channel</ion-label>
-      <ion-input id=channelname></ion-input>
-    </ion-item>
+  <div style='text-align: center;'>
     <ion-item>
-      <ion-label color="primary" floating>Enter your MQTT-Broker Domain</ion-label>
-      <ion-input id="brokerdomain"></ion-input>
-    </ion-item> -->
+       <ion-label text-wrap style="font-weight:700;text-align: center;">Start off with our scientists mode and experience the force of acceleration </ion-label> 
+      </ion-item>
+      <button ion-button icon-left clear small (click)='showIntroduction()' >
+          <div>
+              <ion-icon name="jet"></ion-icon>
+            Show me the introduction!
+          </div> 
+        </button>
+        <br>
+      
+    
+   
   
     <button (click)="getData()"  ion-button color="secondary">
         start
@@ -32,7 +38,8 @@
     <button (click)="deleteData()" ion-button color="danger">
         delete all data
     </button>
-    
+  </div> 
+  <br>
   <div id="xValues" style="display: block;"></div>
   <hr />
   <button (click)="showAllValues()" ion-button color="secondary">
