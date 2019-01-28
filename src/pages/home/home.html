@@ -8,6 +8,15 @@
   </ion-header>
 
 <ion-content padding>
-  <h1>Its all about sensors.</h1>
-  <p>Create new pages for your project und link them in the menu please.</p>
+  <div style="display: block;text-align: center;margin-bottom: 2%">
+    <h2>Welcome to our SenseXperiments App</h2>
+    <div style="font-size: 1.3em; margin-left: 25%; margin-right: 25%">
+      <p>This App has been developed in a study project during the winter semester 2018/2019 at the Institute for Geoinformatics in Münster.</p>
+      <p>The SenseXperiments App makes use of the BMX055 sensor of the sensebox MCU. The sensor provides a 3-axis accelerometer, a 3-axis-gyroscope and a magnetometer</p>
+      <h2>We offer the following content:</h2>
+      <p>You can measure the acceleration and visualize the measurements when you click on <button ion-button (click)="btnClickAccel()">Acceleration</button></p>
+      <p>By clicking on <button ion-button (click)="btnClickGame()">Game</button> you can start the competition with a friend to find out who reaches the higher value of acceleration</p>
+      <p>The <button ion-button (click)="btnClickGyros()">Gyroscope</button> visualizes the measured gyroscope data, but that part of our App is still under construction</p>
+    </div>
+  </div>
 </ion-content>
