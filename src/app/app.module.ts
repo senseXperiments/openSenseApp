@@ -10,13 +10,16 @@ import { PendulumPage } from '../pages/pendulum/pendulum';
 import { ApiProvider } from '../providers/api/api';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalProvider } from '../providers/global/global';
-import { AccelerometerPage } from '../pages/accelerometer/accelerometer';
+import { MaxaccPage } from '../pages/maxacc/maxacc';
+import { GyroscopePage } from '../pages/gyroscope/gyroscope';
 
 @NgModule({
   declarations: [
     openSenseApp,
     HomePage,
-    PendulumPage
+    PendulumPage,
+    //MaxaccPage,
+    //GyroscopePage
   ],
   imports: [
     HttpClientModule,
@@ -27,7 +30,9 @@ import { AccelerometerPage } from '../pages/accelerometer/accelerometer';
   entryComponents: [
     openSenseApp,
     HomePage,
-    PendulumPage
+    PendulumPage,
+    //MaxaccPage,
+    //GyroscopePage
   ],
   providers: [
     StatusBar,
