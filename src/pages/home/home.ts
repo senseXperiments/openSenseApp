@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { MaxaccPage } from '../maxacc/maxacc';
-import { AccelerometerPage } from '../accelerometer/accelerometer';
 import { GyroscopePage } from '../gyroscope/gyroscope';
+import { SenseBoxPage } from '../sense-box/sense-box';
 
 @Component({
   selector: 'page-home',
@@ -17,7 +17,7 @@ export class HomePage {
   //Buttons
   //Button to get to Accelerometer Page
   btnClickAccel() {
-    this.navCtrl.push(AccelerometerPage);
+    this.navCtrl.push(SenseBoxPage);
   }
   //Button to get to the Game
   btnClickGame() {

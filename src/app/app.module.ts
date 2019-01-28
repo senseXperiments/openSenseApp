@@ -10,12 +10,13 @@ import { PendulumPage } from '../pages/pendulum/pendulum';
 import { ApiProvider } from '../providers/api/api';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalProvider } from '../providers/global/global';
+import { AccelerometerPage } from '../pages/accelerometer/accelerometer';
 
 @NgModule({
   declarations: [
     openSenseApp,
     HomePage,
-    PendulumPage,
+    PendulumPage
   ],
   imports: [
     HttpClientModule,
