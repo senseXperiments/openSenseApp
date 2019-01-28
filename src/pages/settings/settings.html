@@ -23,6 +23,10 @@
         <ion-label color="primary" floating>Enter your MQTT-Broker Domain</ion-label>
         <ion-input [(ngModel)]="mqttip"></ion-input>
       </ion-item>
+      <ion-item>
+          <ion-label color="primary" floating>Enter your username</ion-label>
+          <ion-input [(ngModel)]="username"></ion-input>
+        </ion-item>
       <button (click)="save()"  ion-button color="secondary">
           Save Settings
       </button>

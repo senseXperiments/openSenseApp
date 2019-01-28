@@ -29,7 +29,7 @@ export class MaxaccPage {
   maxTwo: number = 0;
   chart: any;
   player = {name: "none", val: 0, disabled: false};
-  todos = [{name: "Player 1", val: 0, disabled: false}, {name: "Player 2", val: 0, disabled: false}];
+  todos = [{name: this.global.username, val: 0, disabled: false}, {name: "Player 2", val: 0, disabled: false}];
   newItem = "";
   gameRunning = false;
   winner = {name : "", val: 0};
@@ -58,7 +58,7 @@ export class MaxaccPage {
             text: 'Time'
           },
           type: 'datetime',
-          tickInterval: 10000, // one week
+          tickInterval: 1000, // one week
           tickWidth: 0,
           gridLineWidth: 1,
           labels: {
@@ -72,23 +72,14 @@ export class MaxaccPage {
             text: 'm/s^2'
           }
         },
+        plotOptions: {
+          series: {
+              marker: {
+                  enabled: false
+              }
+          }
+        },
         series: [
-        // {
-        //     name: "Player 1 Total",
-        //     data: this.pOneDatArray
-        //   },
-        //   {
-        //     name: "Player 1 Y-Axis",
-        //     data: this.pOneYDatArray
-        //   },
-        //   {
-        //     name: "Player 2 Total",
-        //     data: this.pTwoDatArray
-        //   },
-        //   {
-        //     name: "Player 2 Y-Axis",
-        //     data: this.pTwoYDatArray
-        //   }
           ]
       });
     
@@ -146,7 +137,7 @@ export class MaxaccPage {
   /* creates Toast for impatiently players */
   async gameRunningAlert(name) {
       let toast = this.toastCtrl.create({
-        message: 'Sorry ' + name + ' is still playing. Please wait until he or she finished his game time.' ,
+        message: 'Sorry ' + name + ' there is still someone playing. Please wait until he or she finished his game time.' ,
         duration: 3000,
         position: 'middle'
       });
@@ -224,7 +215,7 @@ export class MaxaccPage {
   }
 
   /* resets the game */
-  deleteData() {
+  resetGame() {
     // reset all highscores and re-enable start buttons
     for(var i = 0; i < this.chart.series.length/2; i++){
       this.todos[i].val = 0;
@@ -232,7 +223,10 @@ export class MaxaccPage {
     }
     // remove all series from chart
     while(this.chart.series.length > 0)
-    this.chart.series[0].remove(true);  
+    this.chart.series[0].remove(true);
+
+    this.gameRunning = false;
+    this.winner = {name : "", val: 0};  
   } 
 
   

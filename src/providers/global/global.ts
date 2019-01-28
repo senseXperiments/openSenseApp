@@ -12,6 +12,7 @@ export class GlobalProvider {
 
   public mqttip: string = "192.168.0.227";
   public channelName: string = "accelerometer";
+  public username: string = 'Player 1';
 
   constructor(public http: HttpClient) {
     console.log('Hello GlobalProvider Provider');

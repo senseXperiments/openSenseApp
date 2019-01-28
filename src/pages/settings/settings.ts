@@ -18,6 +18,7 @@ export class SettingsPage {
 
   public mqttip: string = this.global.mqttip;
   public channelName: string = this.global.channelName;
+  public username: string = this.global.username;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
@@ -27,6 +28,7 @@ export class SettingsPage {
     this.save();
   }
   save() {
+    this.global.username = this.username;
     this.global.mqttip = this.mqttip;
     this.global.channelName = this.channelName;
     console.log(this.global.mqttip + 'global');

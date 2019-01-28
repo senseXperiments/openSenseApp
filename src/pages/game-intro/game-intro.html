@@ -185,32 +185,66 @@
                 </ion-item>
           
                 <ion-card-content>
-                    <ion-item>Now you successfully prepared your american senseBall. But wait, do you want to play alone? 
+                    Now you successfully prepared your american senseBall. But wait, do you want to play alone? 
                       Find yourself a worthy opponent or even several oppenents.
                       You can use 
                       <button [disabled]='true'  ion-button color="primary">
                         Add Players &nbsp; <ion-icon name='add-circle'></ion-icon>
                       </button> 
-                      to add as many players as you like. </ion-item>
-                      <ion-item>Give the palyer's name and optionally configure the channel name if they use another senseBall
+                      to add as many players as you like. <br>
+                      Give the palyer's name and optionally configure the channel name if they use another senseBall
                           as the one you configured in your <br>
                           <button ion-button icon-left clear small (click)='loadSettings()'>
-                            <ion-icon name="settings"></ion-icon>
+                            <ion-icon name="settings"></ion-icon> 
                             <div>Settings</div>
-                          </button>.</ion-item> 
-                    
-                      <br>
-                      If you're done, you are ready to start the game. Use <br> 
+                          </button>
+                </ion-card-content>
+          
+                <ion-row>
+                    <ion-col>
+                        <button ion-button icon-left clear small [disabled]="true">
+                            <ion-icon name="american-football"></ion-icon>
+                            <div>Step 4</div>
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button icon-right clear small (click)="skip()">
+                            <div>Skip introduction</div>
+                            <ion-icon name="fastforward"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </ion-slide>
+        <ion-slide>
+            <ion-card>
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="../../assets/imgs/sensebox_wort_und_logo_no_bg.svg" />
+                  </ion-avatar>
+                  <!-- <h2>Who's got what it takes to be a future NFL Quarterback?</h2> -->
+                  <p>senseBox Games</p>
+                </ion-item>
+          
+                <ion-card-content>
+                      Now, you are ready to start the game. Use <br> 
                       <button  [disabled]='true' ion-button color="secondary">
                           Start Player X 
                         </button> <br>
                       and the Player X gets 5 seconds to throw the senseBall as fast as possible.
-                      After the 5 seconds, you can press the next <br>
-                      <button  [disabled]='true' ion-button color="secondary">
-                          Start Player .. 
-                        </button> <br>
-                        button to start the next player's 5 seconds to throw the ball. <br>
-                        If you are done you will see your results, a rating and a ranking.
+                      When Player X's 5 seconds are done, you can start the next player and give him 5 seconds to throw the ball.
+                        Your acceleration values will be plotted in a chart.
+                        If all players are done you can get the winner by pressing 
+                        <button (click)="winnerIs()" ion-button color="primary">
+                            Show me the winner!
+                        </button>
+                        Additionally, you can have a look at the High Score, below the chart.
+                        If you would like to delete some players press   <button (click)="togglePlayButton()" ion-button color="dark">
+                            Edit Players
+                         </button> and choose the players to delete. 
+                         If you want to start a new game just press <button (click)="resetGame()" ion-button color="danger">
+                            Reset Game
+                        </button> and you are ready to start off again.
                         Have fun!
                       
                     
@@ -228,12 +262,12 @@
                     <ion-col>
                         <button ion-button icon-left clear small [disabled]="true">
                             <ion-icon name="american-football"></ion-icon>
-                            <div>Step 4</div>
+                            <div>Step 5</div>
                         </button>
                     </ion-col>
                     <ion-col>
                         <button ion-button icon-right clear small (click)="skip()">
-                            <div>Skip introduction</div>
+                            <div>Continue to game</div>
                             <ion-icon name="fastforward"></ion-icon>
                         </button>
                     </ion-col>
