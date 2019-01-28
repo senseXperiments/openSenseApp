@@ -5,6 +5,7 @@ import * as HighCharts from 'highcharts';
 import { GlobalProvider } from "../../providers/global/global";
 
 
+
 /**
  * Generated class for the MaxaccPage page.
  *
@@ -33,6 +34,7 @@ export class MaxaccPage {
   newItem = "";
   gameRunning = false;
   winner = {name : "", val: 0};
+  showTooltip: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider, public toastCtrl: ToastController) {
   }
@@ -55,9 +57,12 @@ export class MaxaccPage {
         },
         xAxis: {
           title: {
-            text: 'Time'
+            text: 'Seconds'
           },
           type: 'datetime',
+          dateTimeLabelFormats: {
+            second: '%S',
+          } ,        
           tickInterval: 1000, // one week
           tickWidth: 0,
           gridLineWidth: 1,
@@ -69,13 +74,22 @@ export class MaxaccPage {
         },
         yAxis: {
           title: {
-            text: 'm/s^2'
+            text: 'm/s&#178;',
+            useHTML: true
           }
+        },
+        tooltip: {
+          enabled: this.global.showTooltip
         },
         plotOptions: {
           series: {
               marker: {
                   enabled: false
+              }, 
+              states: {
+                hover: {
+                  enabled: false
+                }
               }
           }
         },
@@ -185,13 +199,15 @@ export class MaxaccPage {
       this.chart.addSeries({
         id: item.name,
         name: item.name,
-        data: []
+        data: [],
+        pointInterval: 100
       })
       // add another series with player name + 'total' as id and name + ' Accumulated' as name and empty data 
       this.chart.addSeries({
         id: item.name + "total",
         name: item.name + " Accumulated",
-        data: []
+        data: [],
+        pointInterval: 100
       })
       //subscribe to global channelname
       this.client.subscribe(this.global.channelName + "/#");

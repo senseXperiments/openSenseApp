@@ -5,6 +5,19 @@
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
 
+@font-face {
+  font-family: 'Brix Slab';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/BrixSlab-Regular.otf');
+}
+@font-face {
+  font-family: 'Brix Slab';
+  font-style: bold;
+  font-weight: 700;
+  src: url('../assets/fonts/BrixSlab-Bold.otf');
+}
+
 
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:

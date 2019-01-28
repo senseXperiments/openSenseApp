@@ -7,7 +7,36 @@
     </ion-navbar>
   </ion-header>
 
-<ion-content padding>
-  <h1>Its all about sensors.</h1>
+<!-- <ion-content padding>
+  <h1>Welcome to senseXperiments! </h1>
   <p>Create new pages for your project und link them in the menu please.</p>
+</ion-content> -->
+
+<ion-content>
+
+  <video autoplay loop src="assets/videos/sensebox_vid.mp4"></video>
+
+  <ion-slides autoplay="4000" pager loop>
+      <ion-slide>
+          <h4>Welcome to senseXperiments </h4>
+          <p>Let us help you to experience physics with fun</p>
+      </ion-slide>
+      <ion-slide>
+          <h4>Play the game</h4>
+          <p>Switch to the game page and experience our unique Quarterback Challenge</p>
+      </ion-slide>
+      <ion-slide>
+          <h4>Do experiments</h4>
+          <p>Start with our pendulum experiment or do you own experiments in the scientists mode</p>
+      </ion-slide>
+  </ion-slides>
+
 </ion-content>
+
+<ion-footer>
+  <ion-grid>
+      <ion-row>
+          <ion-col><button ion-button color="primary" full (click)='openInstructions()'> Start off right now </button></ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-footer>

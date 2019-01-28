@@ -27,6 +27,20 @@
           <ion-label color="primary" floating>Enter your username</ion-label>
           <ion-input [(ngModel)]="username"></ion-input>
         </ion-item>
+        <ion-item-divider>
+          </ion-item-divider>
+        <ion-item-divider>
+            <ion-label>
+              Graph Settings:
+            </ion-label>
+          </ion-item-divider>
+        <ion-item> 
+          <ion-label> 
+              <ion-icon name="help-circle"></ion-icon>
+            Display tooltips (may lead to bad performance)
+          </ion-label> 
+          <ion-toggle [(ngModel)]="showTooltip"> Hello </ion-toggle>
+        </ion-item>
       <button (click)="save()"  ion-button color="secondary">
           Save Settings
       </button>
