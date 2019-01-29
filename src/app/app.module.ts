@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     openSenseApp,
     HomePage,
+    PendulumPage
   ],
   imports: [
     HttpClientModule,
