@@ -2,25 +2,26 @@
 
     page-game-intro {
   
-      ion-slide {
-        height: 90vh !important;
-        width: 90 vw !important;
-      }
+    //   ion-slide {
+    //     height: 70vh !important;
+    //     width: 70vw !important;
+    //   }
   
-      ion-slide .intropictures2 {
-        position: relative;
-        height: auto !important;
-        width: 40vw  !important;
-        object-fit: cover;
-      }
-      ion-slide .intropictures1 {
+    //   ion-slide .intropictures2 {
+    //     position: relative;
+    //     height: auto !important;
+    //     width: 30vw  !important;
+    //     object-fit: cover;
+    //   }
+    //   ion-slide .intropictures1 {
         
     
-        height: auto !important;
-        width: 80vw  !important;
-        object-fit: cover;
-      }
+    //     height: auto !important;
+    //     width: 40vw  !important;
+    //     object-fit: cover;
+    //   }
   
-    }
+    // }
   
   }
+}

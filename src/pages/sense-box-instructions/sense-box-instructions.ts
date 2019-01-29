@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SaveChecksProvider } from '../../providers/save-checks/save-checks';
 import {Storage} from "@ionic/storage";
+import { HomePage } from '../home/home';
 
 /**
  * Generated class for the SenseBoxInstructionsPage page.
@@ -25,6 +26,10 @@ export class SenseBoxInstructionsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SenseBoxInstructionsPage');
+  }
+
+  skip() {
+    this.navCtrl.setRoot(HomePage);
   }
 
 }
