@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { Paho } from 'ng2-mqtt/mqttws31';
 import * as HighCharts from 'highcharts';
 import { GlobalProvider } from "../../providers/global/global";
-
+import { SaveChecksProvider } from '../../providers/save-checks/save-checks';
+import {Storage} from "@ionic/storage";
 
 
 /**
@@ -31,12 +32,13 @@ export class MaxaccPage {
   chart: any;
   player = {name: "none", val: 0, disabled: false};
   todos = [{name: this.global.username, val: 0, disabled: false}, {name: "Player 2", val: 0, disabled: false}];
+  scores = [];
   newItem = "";
   gameRunning = false;
   winner = {name : "", val: 0};
   showTooltip: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider, public toastCtrl: ToastController, public saveChecks: SaveChecksProvider, public storage: Storage) {
   }
 
   ionViewDidLoad() {
@@ -166,7 +168,8 @@ export class MaxaccPage {
           position: 'middle'
         });
         toast.present();
-      }
+       
+        }
       else{
         let toast = this.toastCtrl.create({
           message: "And the winner is " + this.winner.name + " with a maximum acceleration of " + this.winner.val + "m/s^2",
@@ -174,6 +177,14 @@ export class MaxaccPage {
           position: 'middle'
         });
         toast.present();
+        // {
+        //   this.storage.ready().then(() => 
+        //   this.storage.get('highscoreList').then((result)=> {
+        //     console.log(result);
+        //       var array = result.push(this.scores[0]);
+        //       this.storage.set('highscoreList', array);
+        //   }))
+        // }
       }
     }
 
@@ -203,12 +214,12 @@ export class MaxaccPage {
         pointInterval: 100
       })
       // add another series with player name + 'total' as id and name + ' Accumulated' as name and empty data 
-      this.chart.addSeries({
-        id: item.name + "total",
-        name: item.name + " Accumulated",
-        data: [],
-        pointInterval: 100
-      })
+      // this.chart.addSeries({
+      //   id: item.name + "total",
+      //   name: item.name + " Accumulated",
+      //   data: [],
+      //   pointInterval: 100
+      // })
       //subscribe to global channelname
       this.client.subscribe(this.global.channelName + "/#");
       // wait 5 seconds
@@ -222,6 +233,9 @@ export class MaxaccPage {
           this.winner.name = item.name;
         }
         item.val = highscore;
+        this.scores = this.todos; 
+        this.scores.sort(function(a, b){return b.val - a.val});
+
         // reset current player variable
         this.player = {name: "none", val: 0, disabled: false};
         // game time is over next player allowed to play
@@ -269,7 +283,9 @@ export class MaxaccPage {
       
       // var timestep = Date.now();
       if(message.destinationName === this.global.channelName + "/tot"){
-        var totalSeries =  this.chart.get(this.player.name + "total");
+        var totalSeries =  this.chart.get(this.player.name 
+          // + "total"
+          );
         var pointArray = 
         // [timestep, 
           +message.payloadString
@@ -280,17 +296,17 @@ export class MaxaccPage {
         //   this.maxOne = +message.payloadString;
         // }
         // this.chart.series[0].setData(this.pOneDatArray);
-      }
-      else if(message.destinationName === this.global.channelName + "/y") {
-        var series = this.chart.get(this.player.name);
-        pointArray = 
-        // [timestep, 
-          +message.payloadString*9.81;
-        // ];
-        series.addPoint(pointArray, true, false, false);
-        // this.pOneYDatArray.push(pointArray); 
-        // this.pOneYDatArray.push(+message.payloadString * 9.81);
-        // this.chart.series[1].setData(this.pOneYDatArray);
+      // }
+      // else if(message.destinationName === this.global.channelName + "/y") {
+      //   var series = this.chart.get(this.player.name);
+      //   pointArray = 
+      //   // [timestep, 
+      //     +message.payloadString*9.81;
+      //   // ];
+      //   series.addPoint(pointArray, true, false, false);
+      //   // this.pOneYDatArray.push(pointArray); 
+      //   // this.pOneYDatArray.push(+message.payloadString * 9.81);
+      //   // this.chart.series[1].setData(this.pOneYDatArray);
       } 
     }    
   }

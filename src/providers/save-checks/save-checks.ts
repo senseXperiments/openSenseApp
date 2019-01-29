@@ -10,6 +10,7 @@ import { Storage} from "@ionic/storage";
 @Injectable()
 export class SaveChecksProvider {
   public showAgain: boolean;
+  public highscoreList = [{name: "Player 1", val:10, disabled: false}]; 
 
   constructor(public http: HttpClient, private storage: Storage) {
     console.log('Hello SaveChecksProvider Provider');
@@ -21,7 +22,9 @@ export class SaveChecksProvider {
       this.storage.get('showAgain').then((val) => {
         this.showAgain = val;
       });
-    
+      this.storage.get('highscoreList').then((val) => {
+        this.storage.set('highscoresList', this.highscoreList);
+      });
      })
     }
 

@@ -13,9 +13,7 @@
 </ion-content> -->
 
 <ion-content>
-
-  <video autoplay loop src="assets/videos/sensebox_vid.mp4"></video>
-
+  <div class="frame"> <video autoplay src="../../assets/videos/sensebox_vid.mp4"></video> <video autoplay loop src="../../assets/videos/sensebox_short.mp4"></video></div>
   <ion-slides autoplay="4000" pager loop>
       <ion-slide>
           <h4>Welcome to senseXperiments </h4>
@@ -37,6 +35,9 @@
   <ion-grid>
       <ion-row>
           <ion-col><button ion-button color="primary" full (click)='openInstructions()'> Start off right now </button></ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col><button ion-button color="primary" full (click)='openSettings()'> Configure your application</button></ion-col>
       </ion-row>
   </ion-grid>
 </ion-footer>

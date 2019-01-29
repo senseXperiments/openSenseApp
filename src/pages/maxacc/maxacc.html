@@ -81,20 +81,45 @@
     <div id="values" style="display: block;"></div>
     
     <ion-item-divider >
-        <ion-label color="primary">
+        <ion-label style="text-align:center;" color="primary">
             HIGH SCORES
       </ion-label>   
     </ion-item-divider>
 
-    <ion-list inset >
-      <!-- <div *ngFor="let item of todos" style="display: block;text-align: center;margin-bottom: 2%"> -->
-      <ion-item-divider *ngFor="let item of todos" >
+    <ion-row>
+        <ion-col size="2">
+          Rank
+        </ion-col>
+        <ion-col size="5">
+          Name
+        </ion-col>
+        <ion-col size="5">
+          Score
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let item of scores; let idx = index">
+          <ion-col size="2">
+            {{idx +1}}.
+          </ion-col>
+          <ion-col size="5">
+            {{item.name}}
+          </ion-col>
+          <ion-col size="5">
+              {{item.val}} m/s&#178;
+          </ion-col>
+        </ion-row>
+
+    <!-- <ion-list inset >
+      
+       <div *ngFor="let item of todos" style="display: block;text-align: center;margin-bottom: 2%"> 
+      <ion-item-divider *ngFor="let item of scores" >
         <ion-label color="primary">
              {{item.name}}: {{item.val}} m/s&#178;   
-            <!-- </div> -->
+            </div>
         </ion-label>   
       </ion-item-divider>
-    </ion-list>
+    </ion-list> -->
      
   </ion-content>
   

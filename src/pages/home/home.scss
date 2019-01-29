@@ -1,7 +1,9 @@
 page-home {
 
     font-family: 'Brix Slab';
-
+    .frame {
+        margin-top: 60px;
+    }
     video {
         position: absolute;
         transform: rotate(90deg) ;
@@ -45,6 +47,6 @@ page-home {
 
     ion-footer {
         background-color: black;
-        height: 20%;
+        // height: 20%;
     }
 }
