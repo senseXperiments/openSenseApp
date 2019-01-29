@@ -23,7 +23,7 @@ export class openSenseApp {
     { title: 'Game', component: 'MaxaccPage' },
     // { title: 'Games', component: 'GamesPage' },
     // { title: 'Experiments', component: 'ExperimentsPage' },
-    // { title: 'Accelerometer', component: 'AccelerometerPage'},
+    { title: 'Experiment', component: 'PendulumPage'},
     { title: 'Gyroscope', component: 'GyroscopePage' },
     { title: 'Settings', component: 'SettingsPage' },
     { title: 'About us', component: 'AboutPage' }

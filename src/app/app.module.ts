@@ -6,7 +6,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { openSenseApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { PendulumPage } from '../pages/pendulum/pendulum';
 import { ApiProvider } from '../providers/api/api';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalProvider } from '../providers/global/global';
@@ -16,8 +15,7 @@ import { SaveChecksProvider } from '../providers/save-checks/save-checks';
 @NgModule({
   declarations: [
     openSenseApp,
-    HomePage,
-    PendulumPage
+    HomePage
 
   ],
   imports: [
@@ -29,8 +27,7 @@ import { SaveChecksProvider } from '../providers/save-checks/save-checks';
   bootstrap: [IonicApp],
   entryComponents: [
     openSenseApp,
-    HomePage,
-    PendulumPage
+    HomePage
   ],
   providers: [
     StatusBar,
