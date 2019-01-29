@@ -27,11 +27,8 @@ import { SaveChecksProvider } from '../providers/save-checks/save-checks';
   bootstrap: [IonicApp],
   entryComponents: [
     openSenseApp,
-<<<<<<< HEAD
     HomePage
-=======
-    HomePage,
->>>>>>> fb1bce476c57c46128cb16194918a058746d3322
+
   ],
   providers: [
     StatusBar,
