@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\resources",
     "\\src",
     "\\src\\app",
-    "\\src\\assets",
-    "\\src\\assets\\icon",
-    "\\src\\assets\\imgs",
     "\\src\\pages",
+    "\\src\\pages\\about",
+    "\\src\\pages\\accelerometer",
+    "\\src\\pages\\experiments",
+    "\\src\\pages\\games",
     "\\src\\pages\\gyroscope",
-    "\\src\\pages\\pendulum"
+    "\\src\\pages\\home"
   ],
-  "SelectedNode": "\\src\\pages\\pendulum\\pendulum.html",
+  "SelectedNode": "\\src\\app\\app.module.ts",
   "PreviewInSolutionExplorer": false
 }
