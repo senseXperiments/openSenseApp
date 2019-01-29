@@ -5,6 +5,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
+import {Storage} from "@ionic/storage";
+import { SaveChecksProvider } from '../providers/save-checks/save-checks';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -16,16 +19,19 @@ export class openSenseApp {
 
   pages: Array<{title: string, component: any}> = [
     { title: 'Home', component: HomePage },
-    { title: 'Acceleration', component: 'SenseBoxPage' },
+    { title: 'Scientists Mode', component: 'SenseBoxPage' },
     { title: 'Game', component: 'MaxaccPage' },
-    // { title: 'Games', component: 'GamesPage' },
+    { title: 'Pendulum Basic', component: 'PendulumPage' },
     // { title: 'Experiments', component: 'ExperimentsPage' },
-    // { title: 'Accelerometer', component: 'AccelerometerPage'},
+    { title: 'Pendulum Advanced', component: 'PendulumAdvancedPage'},
     { title: 'Gyroscope', component: 'GyroscopePage' },
-    { title: 'About', component: 'AboutPage' },
+    { title: 'Settings', component: 'SettingsPage' },
+    { title: 'About us', component: 'AboutPage' }
   ];
+    
+   
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage, public saveChecks: SaveChecksProvider) {
     
   
     platform.ready().then(() => {
@@ -39,7 +45,17 @@ export class openSenseApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    if(page.title == 'Game'){
+      this.storage.get('showAgain').then((result) => {
+        if(result){
+          this.nav.setRoot(page.component);
+        }
+        else{
+          this.nav.setRoot("GameIntroPage");
+        }
+      })
+    }
+    else this.nav.setRoot(page.component);
   }
 }
 

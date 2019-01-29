@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+
 /**
  * Generated class for the PendulumPage page.
  *
@@ -20,6 +21,9 @@ export class PendulumPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PendulumPage');
+    
+    
+    
   }
 
 }
