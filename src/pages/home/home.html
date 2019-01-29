@@ -3,11 +3,34 @@
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>Home</ion-title>
+      <ion-title>senseXperiments</ion-title>
     </ion-navbar>
   </ion-header>
 
-<ion-content padding>
+<!-- <ion-content padding>
+  <h1>Welcome to senseXperiments! </h1>
+  <p>Create new pages for your project und link them in the menu please.</p>
+</ion-content> -->
+
+<ion-content>
+  <div class="frame"> <video autoplay src="../../assets/videos/sensebox_vid.mp4"></video> <video autoplay loop src="../../assets/videos/sensebox_short.mp4"></video></div>
+  <ion-slides autoplay="4000" pager loop>
+      <ion-slide>
+          <h4>Welcome to senseXperiments </h4>
+          <p>Let us help you to experience physics with fun</p>
+      </ion-slide>
+      <ion-slide>
+          <h4>Play a game</h4>
+          <p>Switch to the game page and experience our unique <b>Quarterback Challenge</b></p>
+      </ion-slide>
+      <ion-slide>
+          <h4>Do experiments</h4>
+          <p>Start with our pendulum experiment or do you own experiments in the scientists mode</p>
+      </ion-slide>
+  </ion-slides>
+
+
+<!-- <ion-content padding>
   <div style="display: block;text-align: center;margin-bottom: 2%">
     <h2>Welcome to our SenseXperiments App</h2>
     <div style="font-size: 1.3em; margin-left: 25%; margin-right: 25%">
@@ -19,5 +42,17 @@
       <p>The <ion-badge color="success">Gyroscope</ion-badge> visualizes the measured gyroscope data, but that part of our App is still under construction</p>
     </div>
     
-  </div>
+  </div> -->
+
 </ion-content>
+
+<ion-footer style="background-color:black;">
+  <ion-grid>
+      <ion-row>
+          <ion-col><button ion-button color="primary" full (click)='openInstructions()'> Start off right now </button></ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col><button ion-button color="primary" full (click)='openSettings()'> Configure your application</button></ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-footer>

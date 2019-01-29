@@ -1,3 +1,52 @@
 page-home {
 
+    font-family: 'Brix Slab';
+    .frame {
+        margin-top: 60px;
+    }
+    video {
+        position: absolute;
+        transform: rotate(90deg) ;
+      
+        transform-origin: bottom left;
+        width: 100vh;
+        height: 100vw;
+        margin-top: -100vw;
+        object-fit: cover;
+      
+        z-index: -100;
+    }
+
+    // ion-header {
+    //     opacity: 0.8;
+    // }
+
+    ion-slides {
+        height: 200px;
+        position: absolute;
+        bottom: 0;
+
+        ion-slide {
+            color: #fff;
+        }
+
+        h4 {
+            font-weight: bold;
+        }
+
+        .swiper-pagination-bullet {
+            background: map-get($colors, light);
+        }
+
+    }
+
+    button {
+            align-content: center;
+            font-weight: bold;
+    }
+
+    ion-footer {
+        background-color: black;
+        // height: 20%;
+    }
 }
