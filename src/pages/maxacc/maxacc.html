@@ -9,29 +9,117 @@
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>How fast can you accelerate?</ion-title>
+      <ion-title>The Quarterback Challenge</ion-title>
     </ion-navbar>
   </ion-header>
   
   <ion-content padding>
-    <div style="display: block;text-align: center;margin-bottom: 2%"> 
-      <h2> Compete against fellow players and try to accelerate faster than they do! </h2>
-      <p style="font-size: 1.3em; margin-left: 25%; margin-right: 25%">Hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 1</button> and you will get about three seconds to accelerate the senseBox MCU as fast as possible.
-      Then it's your opponent's turn. Hand him the senseBox MCU and hit <button ion-button color="secondary" style="font-size:0.5em">Start Player 2</button> and you will see if your opponent can beat your acceleration record!</p>  
-      </div>
+      <div style='text-align: center;'>
+          <ion-item>
+             <ion-label text-wrap style="font-weight:700;text-align: center;"> Play the game and prove you have what it takes to be an NFL quarterback </ion-label> 
+            </ion-item>
+            <button ion-button icon-left clear small (click)='showIntroduction()' >
+                <div>
+                    <ion-icon name="jet"></ion-icon>
+                  Show me the introduction!
+                </div> 
+              </button>
+              <br>
+    <!-- <div style="display: block;text-align: center;margin-bottom: 2%"> 
+      <h2> Who's got what it takes to be a future NFL Quarterback? </h2>
+      <button ion-button icon-left clear small (click)='showIntroduction()' >
+        <div>
+            <ion-icon name="jet"></ion-icon>
+          Show me the introduction!
+        </div> 
+      </button> -->
+    </div> 
     <div style="display: block;text-align: center;margin-bottom: 2%">
-      <button (click)="getData()"  ion-button color="secondary">
-          Start Player 1
-      </button>
-      <button (click)="stopData()" ion-button color="secondary">
-          Start Player 2
-      </button>
-      <button (click)="deleteData()" ion-button color="secondary">
-          Reset Game
-      </button>
+        <button (click)='hideAddPlayer()' ion-button color="primary">
+            Add Players &nbsp; <ion-icon name='add-circle'></ion-icon>
+        </button>
+        <button (click)="resetGame()" ion-button color="danger">
+            Reset Game
+        </button>
+        <button (click)="togglePlayButton()" ion-button color="dark">
+           Edit Players
+        </button>
+        
+
+           
+  
+
+      <div id="newPlayer">
+        <div *ngIf="showPlayers">
+            <ion-list inset>
+                <button *ngFor="let item of todos" (click)="play(item)" ion-button color="secondary" [disabled]="item.disabled">
+                  Start {{item.name}}
+                </button>
+            </ion-list>
+        </div>
+          
+        <div *ngIf="showPlayers==false">
+            <ion-list inset>
+              <button *ngFor="let item of todos; let idx = index" (click)="deletePlayer(idx)" ion-button color="danger" [disabled]="item.disabled">
+                Delete {{item.name}}
+              </button>
+            </ion-list>
+        </div>        
+        <div *ngIf="hideMe">
+          <ion-item>
+              <ion-input [(ngModel)]='newItem' placeholder="Give a player name here .. "></ion-input>
+              <button item-end ion-button style="align-self: flex-end" (click)='saveNew(newItem)'>Save</button>
+              <button  item-end ion-button style="align-self: flex-end" color="danger" (click)='cancelNew()'>Cancel</button>
+          </ion-item>
+        </div>
+        <button (click)="winnerIs()" ion-button color="primary">
+            Show me the winner!
+        </button>
+      </div>
+
     </div>
-      <div id="maxOne" style="display: block;text-align: center;margin-bottom: 2%"> <h1>Maximum Player 1: {{maxOne}} m/s&#178; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Maximum Player 2: {{maxTwo}} m/s&#178; </h1> </div>
-      <div id="values" style="display: block;"></div>
-    <hr />
+    <div id="values" style="display: block;"></div>
+    
+    <ion-item-divider >
+        <ion-label style="text-align:center;" color="primary">
+            HIGH SCORES
+      </ion-label>   
+    </ion-item-divider>
+
+    <ion-row>
+        <ion-col size="2">
+          Rank
+        </ion-col>
+        <ion-col size="5">
+          Name
+        </ion-col>
+        <ion-col size="5">
+          Score
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let item of scores; let idx = index">
+          <ion-col size="2">
+            {{idx +1}}.
+          </ion-col>
+          <ion-col size="5">
+            {{item.name}}
+          </ion-col>
+          <ion-col size="5">
+              {{item.val}} m/s&#178;
+          </ion-col>
+        </ion-row>
+
+    <!-- <ion-list inset >
+      
+       <div *ngFor="let item of todos" style="display: block;text-align: center;margin-bottom: 2%"> 
+      <ion-item-divider *ngFor="let item of scores" >
+        <ion-label color="primary">
+             {{item.name}}: {{item.val}} m/s&#178;   
+            </div>
+        </ion-label>   
+      </ion-item-divider>
+    </ion-list> -->
+     
   </ion-content>
   

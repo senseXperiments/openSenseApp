@@ -9,22 +9,42 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Acceleration</ion-title>
+    <ion-title>Scientists Mode</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <div style='text-align: center;'>
+    <ion-item>
+       <ion-label text-wrap style="font-weight:700;text-align: center;">Start off with our scientists mode and experience the force of acceleration </ion-label> 
+      </ion-item>
+      <button ion-button icon-left clear small (click)='showIntroduction()' >
+          <div>
+              <ion-icon name="jet"></ion-icon>
+            Show me the introduction!
+          </div> 
+        </button>
+        <br>
+      
+    
+   
+  
     <button (click)="getData()"  ion-button color="secondary">
         start
     </button>
     <button (click)="stopData()" ion-button color="secondary">
         stop
     </button>
-    <button (click)="deleteData()" ion-button color="secondary">
+    <button (click)="deleteData()" ion-button color="danger">
         delete all data
     </button>
-
+  </div> 
+  <br>
   <div id="xValues" style="display: block;"></div>
   <hr />
-  <div id="container" style="display: block;"></div>
+  <button (click)="showAllValues()" ion-button color="secondary">
+    Show full data</button>
+  <div id="allValues" style="display: block;"></div>  
+  <hr />
+      
 </ion-content>
