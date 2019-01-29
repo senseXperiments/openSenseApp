@@ -14,15 +14,16 @@
 </ion-header>
 
 <ion-content padding>
-    <button (click)="getData()"  ion-button color="secondary">
-        start
-    </button>
-    <button (click)="stopData()" ion-button color="secondary">
-        stop
-    </button>
-    <button (click)="deleteData()" ion-button color="secondary">
-        delete all data
-    </button>
+  <button ion-button (click)="btnClick()">Example for Pendulum Setup</button>
+  <button (click)="getData()" ion-button color="secondary">
+    start
+  </button>
+  <button (click)="stopData()" ion-button color="secondary">
+    stop
+  </button>
+  <button (click)="deleteData()" ion-button color="secondary">
+    delete all data
+  </button>
 
   <div id="xValues" style="display: block;"></div>
   <hr />

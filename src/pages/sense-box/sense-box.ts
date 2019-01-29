@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Paho } from 'ng2-mqtt/mqttws31';
 import * as HighCharts from 'highcharts';
 import { GlobalProvider } from "../../providers/global/global";
+import { PendulumPage } from '../pendulum/pendulum';
 /**
  * Generated class for the SenseBoxPage page.
  *
@@ -116,6 +117,9 @@ export class SenseBoxPage {
     console.log('ionViewDidLoad SenseBoxPage');
   }
 
+  btnClick() {
+    this.navCtrl.push(PendulumPage);
+  }
 
   getData() {
     if(this.connected){

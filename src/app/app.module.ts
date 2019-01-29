@@ -10,8 +10,8 @@ import { PendulumPage } from '../pages/pendulum/pendulum';
 import { ApiProvider } from '../providers/api/api';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalProvider } from '../providers/global/global';
-import { MaxaccPage } from '../pages/maxacc/maxacc';
-import { GyroscopePage } from '../pages/gyroscope/gyroscope';
+//import { MaxaccPage } from '../pages/maxacc/maxacc';
+//import { GyroscopePage } from '../pages/gyroscope/gyroscope';
 
 @NgModule({
   declarations: [
