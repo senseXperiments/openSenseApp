@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Paho } from 'ng2-mqtt/mqttws31';
 import * as HighCharts from 'highcharts';
-/**
- * Generated class for the PendulumAdvancedPage page.
+// import Boost from 'highcharts/modules/boost';
+import { GlobalProvider } from "../../providers/global/global";
+ 
+/* Generated class for the PendulumAdvancedPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -15,44 +18,257 @@ import * as HighCharts from 'highcharts';
 })
 export class PendulumAdvancedPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  boxData: any;
+  client: any;
+  message: any;
+  xdatArray = [];
+  ydatArray = []; 
+  zdatArray = [];
+  totDatArray = []; 
+  xchart: any;
+  allValChart: any;
+  connected: boolean = false;
+  count: number = 0;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PendulumAdvancedPage');
 
-    HighCharts.chart('xValues', {
-      chart: {
-        type: 'spline'
-      },
-      title: {
-        text: 'Acceleration on X-Axis'
-      },
-      xAxis: {
-        title: {
-          text: 'Measurements'
-        }
-      },
-      yAxis: {
-        title: {
-          text: 'Value of Acceleration'
-        }
-      },
-      series: [{
-        name: "X-Axis",
-        data: [9, 6, 9, 8, 1, 6, 10, 4, 1, 3, 2, 3, 12, 8, 10, 1, 3, 12, 8, 10, 4, 5, 4, 7, 0, 7, 7, 12, 1, 3, 0, 5, 3, 8, 7, 6, 5, 11, 3, 6, 8, 7, 5, 2, 0, 5, 2, 9, 9, 4]
-      },
-      {
-        name: "Y-Axis",
-        data: [11, 6, 5, 7, 2, 12, 7, 5, 0, 10, 9, 10, 12, 6, 7, 9, 11, 1, 6, 4, 6, 11, 9, 1, 10, 9, 9, 8, 1, 3, 12, 8, 11, 0, 5, 4, 12, 12, 12, 10, 4, 8, 3, 5, 11, 6, 3, 8, 5, 9]
-
-      },
-      {
-        name: "Z-Axis",
-        data: [12, 9, 6, 8, 1, 8, 0, 3, 12, 1, 1, 8, 7, 10, 8, 10, 9, 4, 2, 11, 10, 11, 10, 7, 1, 0, 12, 9, 0, 4, 11, 8, 6, 1, 3, 9, 11, 3, 5, 12, 8, 7, 8, 9, 12, 11, 9, 2, 12, 0]
-      }]
+    HighCharts.setOptions({
+      time: {
+          timezone: 'Europe/Berlin'
+      }
     });
 
+      this.xchart = HighCharts.chart('xValues', {
+        chart: {
+          type: 'spline',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.',
+        },
+        title: {
+          text: 'Acceleration of senseBox'
+        },
+        time: {
+          useUTC: false
+        },
+        xAxis: {
+          title: {
+            text: 'Time'
+          },
+          type: 'datetime',
+          tickInterval: 10000, // one week
+          tickWidth: 0,
+          gridLineWidth: 1,
+          labels: {
+              align: 'left',
+              x: 3,
+              y: -3
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'G-Force'
+          }
+        },
+        plotOptions: {
+          series: {
+              marker: {
+                  enabled: false
+              }
+          }
+      },
+        series: [{
+            name: "X-Axis",
+            data: [],
+          },
+          {
+            name: "Y-Axis",
+            data: [],
+          },
+          {
+            name: "Z-Axis",
+            data: [],
+          },
+          { name: "Total",
+            data: [],
+          }]
+      });
+
+      this.allValChart = HighCharts.chart('allValues', {
+        chart: {
+          type: 'spline',
+          zoomType: 'x',
+          panning: true,
+          panKey: 'shift',
+          description: 'Click and drag a window to zoom in! Press  "Shift" and click and drag to move the window.'
+        },
+        title: {
+          text: 'Full measurement period of senseBox acceleration'
+        },
+        time: {
+          useUTC: false
+        },
+        xAxis: {
+          title: {
+            text: 'Time'
+          },
+          type: 'datetime',
+          tickInterval: 10000, // one week
+          tickWidth: 0,
+          gridLineWidth: 1,
+          labels: {
+              align: 'left',
+              x: 3,
+              y: -3
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'G-Force'
+          }
+        },
+        plotOptions: {
+          series: {
+              marker: {
+                  enabled: false
+              },
+          turboThreshold: 0
+          }
+      },
+        series: [{
+            name: "X-Axis",
+            data: this.xdatArray
+          },
+          {
+            name: "Y-Axis",
+            data: this.ydatArray
+          },
+          {
+            name: "Z-Axis",
+            data: this.zdatArray
+          },
+          { name: "Total",
+            data: this.totDatArray
+          }]
+      });
+    
+    // Create a client instance
+    this.client = new Paho.MQTT.Client(this.global.mqttip, 11883, "clienId");
+    
+
+    // set callback handlers
+    this.client.onConnectionLost = this.onConnectionLost;
+    this.client.onMessageArrived = this.onMessageArrived;
+
+    // connect the this.client
+    this.client.connect({onSuccess:this.onConnect.bind(this)});
+    console.log(this.client);
+    console.log('ionViewDidLoad SenseBoxPage');
   }
 
-}
+  // start subscribing data channel = data starts incoming
+
+  getData() {
+    console.log("get" + this.connected);
+    if(this.connected){
+      this.client.subscribe(this.global.channelName + "/#");  
+    }
+  }
+
+  // unsubscribe data channel = no data incoming anymore
+  stopData() {
+    if(this.connected){
+      this.client.unsubscribe(this.global.channelName + "/#");
+    }
+  }
+  
+  // delete all data from charts and storage arrays
+  deleteData() {
+    this.xchart.series[0].setData([]);
+    this.xdatArray = [];
+    this.allValChart.series[0].setData(this.xdatArray);
+    this.xchart.series[1].setData([]);
+    this.ydatArray = [];
+    this.allValChart.series[1].setData(this.ydatArray);
+    this.xchart.series[2].setData([]);
+    this.zdatArray = [];
+    this.allValChart.series[2].setData(this.zdatArray);
+    this.totDatArray = [];
+    this.xchart.series[3].setData([]);
+    this.allValChart.series[3].setData(this.totDatArray);
+  }
+
+
+  // shows all the values that were measured during a measurement period 
+  showAllValues() {   
+    this.allValChart.series[0].setData(this.xdatArray, false);    
+    this.allValChart.series[1].setData(this.ydatArray, false);    
+    this.allValChart.series[2].setData(this.zdatArray, false);    
+    this.allValChart.series[3].setData(this.totDatArray, false);
+    this.allValChart.redraw(false);
+  }
+
+   // called when the this.client connects
+  onConnect() {
+    this.connected = true;
+    // Once a connection has been made, make a subscription and send a message.
+    console.log("onConnect");
+    console.log(this.client);
+  }
+
+  // called when the this.client loses its connection
+  onConnectionLost(responseObject) {
+    console.log(responseObject);
+    if (responseObject.errorCode !== 0) {
+      this.connected = false;
+      console.log("onConnectionLost:"+responseObject.errorMessage);
+    }
+  }
+
+  // called when a message arrives
+  onMessageArrived = (message) => {
+    // console.log("onMessageArrived:", message.destinationName, message.payloadString);
+    if(message.destinationName === this.global.channelName + "/x") {
+      var timestep = Date.now();
+      var pointArray = [timestep, +message.payloadString];
+      var series = this.xchart.series[0];
+      var shift = series.yData.length > 50;
+      this.xchart.series[0].addPoint(pointArray, true, shift, false);
+      this.xdatArray.push(pointArray);
+      // this.xchart.series[0].setData(this.xdatArray);
+    }
+    else if(message.destinationName === this.global.channelName + "/y") {
+      // this.xchart.series[1].setData(this.ydatArray);
+      timestep = Date.now();
+      pointArray = [timestep, +message.payloadString];
+      series = this.xchart.series[1];
+      shift = series.yData.length > 50;
+      this.xchart.series[1].addPoint(pointArray, false, shift, false);    
+      this.ydatArray.push(pointArray);
+    }
+    else if(message.destinationName === this.global.channelName + "/z") {
+      // this.xchart.series[2].setData(this.zdatArray);
+      timestep = Date.now();
+      pointArray = [timestep, +message.payloadString];
+      series = this.xchart.series[2];
+      shift = series.yData.length > 50;
+      this.xchart.series[2].addPoint(pointArray, false, shift, false);    
+      this.zdatArray.push(pointArray);
+    }
+    else if(message.destinationName === this.global.channelName + "/tot") {
+      // this.xchart.series[3].setData(this.totDatArray);
+      timestep = Date.now();
+      pointArray = [timestep, +message.payloadString/9.81];
+      series = this.xchart.series[3];
+      shift = series.yData.length > 50;
+      this.xchart.series[3].addPoint(pointArray, false, shift, false);    
+      this.totDatArray.push(pointArray);
+    }
+ 
+  }
+
+ }

@@ -57,5 +57,26 @@
 
     </div>
   </div>
-  
+
+      <div>
+        <button (click)="getData()"  ion-button color="secondary">
+            start
+        </button>
+        <button (click)="stopData()" ion-button color="secondary">
+            stop
+        </button>
+        <button (click)="deleteData()" ion-button color="danger">
+            delete all data
+        </button>
+      </div> 
+      <br>
+    
+    
+      <div id="xValues" style="display: block;"></div>
+      <hr />
+      <button (click)="showAllValues()" ion-button color="secondary">
+        Show full data</button>
+      <div id="allValues" style="display: block;"></div>  
+      <hr />
+          
 </ion-content>
