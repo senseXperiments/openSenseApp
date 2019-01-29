@@ -11,4 +11,12 @@ export class HomePage {
 
   }
 
+  /* shows Introduction slides */
+  openInstructions() {
+    this.navCtrl.push('SenseBoxInstructionsPage');
+  }
+  openSettings() {
+    this.navCtrl.push('SettingsPage');
+
+  }
 }
