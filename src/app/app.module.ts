@@ -18,6 +18,7 @@ import { SaveChecksProvider } from '../providers/save-checks/save-checks';
     openSenseApp,
     HomePage,
     PendulumPage
+
   ],
   imports: [
     HttpClientModule,

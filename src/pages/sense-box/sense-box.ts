@@ -5,6 +5,7 @@ import * as HighCharts from 'highcharts';
 // import Boost from 'highcharts/modules/boost';
 import { GlobalProvider } from "../../providers/global/global";
 // Boost(HighCharts);
+
 /**
  * Generated class for the SenseBoxPage page.
  *
@@ -216,6 +217,11 @@ export class SenseBoxPage {
   }
 
   // start subscribing data channel = data starts incoming
+
+//   btnClick() {
+//     this.navCtrl.push(PendulumPage);
+//   }
+
   getData() {
     console.log("get" + this.connected);
     if(this.connected){
