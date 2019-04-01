@@ -157,8 +157,12 @@ export class PendulumPage {
           }]
       });
     
+    // generating random clientID
+    var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    var uniqid = randLetter + Date.now();
+
     // Create a client instance
-    this.client = new Paho.MQTT.Client(this.global.mqttip, 11883, "clienId");
+    this.client = new Paho.MQTT.Client(this.global.mqttip, this.global.websocketsPort, uniqid);  
     
 
     // set callback handlers

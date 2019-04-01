@@ -15,18 +15,44 @@
 
 
 <ion-content padding>
-    <ion-item>
-        <ion-label color="primary" floating>Enter your channel</ion-label>
+ 
+    
+      <ion-item-divider>
+          <ion-label>
+            senseBox Settings:
+          </ion-label>
+      </ion-item-divider>
+      <ion-item>
+        <ion-label color="primary" floating>Enter the channelname of your senseBox</ion-label>
         <ion-input [(ngModel)]="channelName"></ion-input>
       </ion-item>
+      <ion-item-divider>
+        </ion-item-divider>
+      <ion-item-divider>
+          <ion-label>
+            MQTT Settings:
+          </ion-label>
+      </ion-item-divider>
       <ion-item>
         <ion-label color="primary" floating>Enter your MQTT-Broker Domain</ion-label>
         <ion-input [(ngModel)]="mqttip"></ion-input>
       </ion-item>
       <ion-item>
-          <ion-label color="primary" floating>Enter your username</ion-label>
-          <ion-input [(ngModel)]="username"></ion-input>
+        <ion-label color="primary" floating>Enter your MQTT-Port for Websockets</ion-label>
+        <ion-input [(ngModel)]="websocketsPort"></ion-input>
+      </ion-item>
+      <ion-item-divider>
+        </ion-item-divider>
+      <ion-item-divider>
+          <ion-label>
+            Game Settings:
+          </ion-label>
+        </ion-item-divider>
+        <ion-item>
+            <ion-label color="primary" floating>Enter your username</ion-label>
+            <ion-input [(ngModel)]="username"></ion-input>
         </ion-item>
+        
         <ion-item-divider>
           </ion-item-divider>
         <ion-item-divider>

@@ -24,7 +24,6 @@ export class openSenseApp {
     { title: 'Pendulum Basic', component: 'PendulumPage' },
     // { title: 'Experiments', component: 'ExperimentsPage' },
     { title: 'Pendulum Advanced', component: 'PendulumAdvancedPage'},
-    { title: 'Gyroscope', component: 'GyroscopePage' },
     { title: 'Settings', component: 'SettingsPage' },
     { title: 'About us', component: 'AboutPage' }
   ];

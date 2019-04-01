@@ -20,6 +20,7 @@ export class SettingsPage {
   public channelName: string = this.global.channelName;
   public username: string = this.global.username;
   public showTooltip: boolean = this.global.showTooltip;
+  public websocketsPort: number = this.global.websocketsPort;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: GlobalProvider) {
   }
@@ -33,6 +34,7 @@ export class SettingsPage {
     this.global.mqttip = this.mqttip;
     this.global.channelName = this.channelName;
     this.global.showTooltip = this.showTooltip;
+    this.global.websocketsPort = this.websocketsPort;
     console.log(this.global.mqttip + 'global');
     console.log(this.mqttip + 'local');
     console.log(this.channelName + 'channel');
